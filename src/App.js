@@ -610,7 +610,7 @@ import React, {Component} from 'react';
 //     )
 // }
 
-// --------------------------------children prop-----------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 // function SideBar(props){
 //   return (
@@ -639,38 +639,245 @@ import React, {Component} from 'react';
 //     )
 // }
 
-// ------------------------------specialization-------------------------------------------------------
-function Modal(props){
-  return (
-    <div className='bg-gray-800/50 h-screen w-screen absolute top-0 left-0'>
-      <div className='bg-white rounded w-1/2 p-4 mx-auto flex flex-col'>
-        <h1 className='text-xl'>{props.title}</h1>
-        <hr className='my-2'/>
+// // -------------------------------------------------------------------------------------
+// class SimpleButton extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+//   }
+  
+//   render() { 
+//     const color = this.props.color || 'blue';
+//     const skin = this.props.type === 'outline' ? `border-2 border-solid border-${color}-400 hover:bg-${color}-400 hover:text-white` : `text-white bg-${color}-600 hover:bg-${color}-800`;
 
-        {props.children}
+//     return (
+//       <button className={`rounded p-2 ${skin} ${this.props.class}`} onClick={this.props.click}>{this.props.children || 'save'}</button>
+//     );
+//   }
+// }
+ 
+// class Modal extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+      
+//     };
 
-        <hr className='my-2'/>
-        {props.modalFooter}
-      </div>
-    </div>
-  );
+//     this.closeModal = this.closeModal.bind(this);
+//     this.save = this.save.bind(this);
+//   }
+
+//   closeModal(){
+//     const {title} = this.props;
+    
+//     this.props.onModalClose(`${title[0].toUpperCase()}${title.slice(1, title.length)}`);
+//   }
+
+//   save(){
+//     if(this.props.onSaveClick){
+//       this.props.onSaveClick()
+//     }
+//   }
+
+//   render() { 
+//     const footerElement = <footer className='flex'>
+//       <SimpleButton color="gray" type="outline" class="ml-auto" click={this.closeModal}>cancel</SimpleButton>
+//       <SimpleButton color="blue" class="ml-3" click={this.save}></SimpleButton>
+//     </footer>
+
+//     return (
+//       <div className={`bg-gray-800/50 w-full min-h-screen h-auto py-6 absolute top-0 left-0 flex items-center ${this.props.isModalShow || 'hidden'}`}>
+//         <div className='bg-white rounded w-1/2 p-4 mx-auto'>
+//           <header className='flex justify-between text-xl'>
+//             <span >{this.props.title}</span>
+
+//             <button className='bold hover:scale-150' onClick={this.closeModal}>×</button>
+//           </header>
+  
+//           <hr className='my-2'/>
+          
+//           <main>
+//             {this.props.children}
+//           </main>
+  
+//           <hr className='my-2'/>
+  
+//           {this.props.modalFooter || footerElement}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+
+// class TableModal extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+//   }
+//   render() { 
+//     const field = this.props.field;
+
+//     return (
+//       <Modal title={this.props.title} isModalShow={this.props.isModalShow} onModalClose={this.props.onModalClose}>
+//         <table className='border-2 border-solid border-gray-400 mx-auto'>
+//           <tbody>
+//             <tr>
+//               {
+//                 field.map((field, index) => <th className='border-2 border-solid border-gray-400 p-2' key={`field-${index}`}>{field.label}</th>)
+//               }
+//             </tr>
+
+//             {
+//               this.props.data.map((data, index) => {
+//                 return (<tr key={`row-${index}`}>
+//                           {field.map((field, index2) => <td className='border-2 border-solid border-gray-400 p-2' key={`${index}-${index2}`}>{data[field.key]}</td>)}
+//                         </tr>);
+//               })
+//             }
+//           </tbody>
+//         </table>
+//       </Modal>
+//     );
+//   }
+// }
+ 
+// class App extends Component {
+//   state = {
+//     isCatusShow: false,
+//     isLilacShow:false,
+//     isHydrangeaShow: false,
+//     isTableShow: false,
+//     lilacImages:[
+//       'https://images.unsplash.com/photo-1595681238340-3e1024c79cf5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+//       'https://images.unsplash.com/photo-1622891597799-17ac7f9ab6fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80',
+//       'https://images.unsplash.com/photo-1589186118523-34c03029a4b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80',
+//     ],
+//     counter:0,
+//     plantNames:['Catus', 'Lilac','Hydrangea', 'Table'],
+//     tableData:[{id:1, name:'Alex', English:99, Math:78}, {id:2, name:'Emma', English: 88, Math:89}, {id:3, name:'Joy', English:76, Math:65}],
+//     tableField:[{key:'id', label:'座號'},{key:'name', label:'姓名'},{key:'English', label:'英文'},{key:'Math', label:'數學'}],
+//   };
+
+//   toggleModal = (variable) => {
+//     this.setState({
+//       [`is${variable}Show`]:!this.state[`is${variable}Show`],
+//     })    
+//   }  
+
+//   save = (msg) => {
+//     alert(msg);
+//   }
+
+//   add = () => {
+//     this.setState({
+//       counter:this.state.counter + 1 >2 ? 0 : this.state.counter + 1
+//     })
+//   }
+
+//   render(){
+//     const footer =  (<footer className='flex'>
+//                       <SimpleButton color="red" click={() => {this.save('delete button of hydrangea')}} class="ml-auto">delete</SimpleButton>
+//                     </footer>);
+
+//     return (
+//       <div>
+//         <div className='container'>
+//           <h1 className='text-2xl text-center mb-3'>this is APP.js</h1>
+  
+//           {
+//             this.state.plantNames.map((name, index) => <SimpleButton key={`${name}-${index}`} color="blue" class={index === 0? '' : 'ml-3'} click={() => {this.toggleModal(name)}}>see {name}</SimpleButton>)
+//           }
+//         </div>
+  
+//         <Modal title="Catus" isModalShow={this.state.isCatusShow} onModalClose={this.toggleModal}>
+//           <img src="https://images.unsplash.com/photo-1615402062376-6a4eb078137f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331&q=80" alt="" />
+//         </Modal>
+  
+//         <Modal title="Lilac" isModalShow={this.state.isLilacShow} onModalClose={this.toggleModal} onSaveClick={this.add}>
+//           <div>
+//             <img src={this.state.lilacImages[this.state.counter]} alt="" className='mx-auto'/>
+//           </div>
+//         </Modal>
+
+//         <Modal title="Hydrangea" modalFooter={footer} isModalShow={this.state.isHydrangeaShow}  onModalClose={this.toggleModal}>
+//           <img src="https://images.unsplash.com/photo-1527945505182-b4c5cbc546a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" alt="" className='mb-3'/>
+//         </Modal>
+
+//         <TableModal title="table" field={this.state.tableField} data={this.state.tableData} isModalShow={this.state.isTableShow} onModalClose={this.toggleModal}></TableModal>
+//       </div>
+//     );
+//   }
+// }
+
+// export default App;
+
+// -------------------------------------CSS in JS(styled-component)------------------------------------------------
+
+import styled, { css } from 'styled-components'; 
+
+const SimpleButton = styled.button`
+  border: 2px solid;
+  border-radius: 0.25rem;
+  padding: 0.5em;
+  
+
+  ${props => {
+    const colorMap = {
+      primary:{
+        normal:'#08A6BB',
+        dark:'#068394'
+      },
+      error:{
+        normal:'#dc3545',
+        dark:'#b62d3b'
+      },
+      warning:{
+        normal:'gold',
+        dark:'#e2c000'
+      }
+    };
+
+    if(props.outline){
+      return css`
+        background: transparent;
+        color: ${colorMap[props.color].normal};
+        border-color: ${colorMap[props.color].normal};
+
+        &:hover{
+          color: white;
+          background: ${colorMap[props.color].normal};
+        }
+      `
+    }else{
+      return css`
+        background: ${colorMap[props.color].normal};
+        color: white;
+        border-color: ${colorMap[props.color].normal};
+
+        &:hover{
+          background: ${colorMap[props.color].dark};
+          border-color: ${colorMap[props.color].dark};
+        }        
+      `
+    }
+  }}
+`;
+
+SimpleButton.defaultProps = { // 設置props的default value
+  color: 'primary',
 }
 
 
 function App(){
-  const footer =  <button className='bg-blue-600 rounded p-2 text-white ml-auto'>save</button>;
-
   return (
-    <div>
-      <div className='container'>
-        <h1 className='text-2xl'>this is APP</h1>
-
-      </div>
-      <Modal title="tempura ninja modal" modalFooter={footer}>
-        <img src="" alt="" />
-      </Modal>
+    <div className="container">
+      {/* 使用onClick prop就將方法綁定 */}
+      <SimpleButton onClick={() => alert('this is normal button')}>Normal Button</SimpleButton>
+      
+      {/* 使用className Prop就可以將styled component與Tailwind混用 */}
+      <SimpleButton outline color="error" className="ml-3">Outline Button</SimpleButton>
     </div>
   );
 }
-
+ 
 export default App;
