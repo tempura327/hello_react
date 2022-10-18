@@ -1,6 +1,9 @@
-import React, {Component, useEffect, useState} from 'react';
-
+import React, {Component, createRef, useEffect, useState} from 'react';
+import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 import styled, { css, keyframes } from 'styled-components'; 
+// import BarChart from './BarChart';
+// import WeatherForecast from './WeatherForecast';
+
 // import logo from './logo.svg';
 
 // const colorMap = {
@@ -765,76 +768,92 @@ class SimpleButton extends Component {
 // }
 
 // --------------------------------controlled component(single controlled element)-----------------------------------------------------
-// class CheckItem extends Component{
-//   constructor(props){
-//     super(props);
+class CheckItem extends Component{
+  constructor(props){
+    super(props);
 
-//     this.state = {
-//       isDone:props.state,
-//     }
+    this.state = {
+      // isDone:props.state,
+    }
 
-//     this.toggle = this.toggle.bind(this);
-//   }
+    this.toggle = this.toggle.bind(this);
+  }
 
-//   toggle(){
-//     this.setState({
-//       isDone: !this.state.isDone,
-//     })
-//   }
+  toggle(e){
+    // this.setState({
+      // isDone: !this.state.isDone,
+    // })
+    this.props.onToggle(Boolean(e.target.value), this.props.index);
+  }
 
-//   render(){
-//     return (
-//       <div className="inline">
-//         <input type="checkbox" checked={this.state.isDone} value={this.state.isDone} onChange={this.toggle} disabled={this.state.isDone} className="mr-2" />
-//         <label className={this.state.isDone? 'line-through' : ''}>{this.props.text}</label>
-//       </div>
-//     )
-//   }
-// }
+  render(){
+    return (
+      <div className="inline">
+        <input type="checkbox" checked={this.props.state} value={this.props.state} onChange={this.toggle} disabled={this.props.state} className="mr-2" />
+        <label className={this.props.state? 'line-through' : ''}>{this.props.text}</label>
+      </div>
+    )
+  }
+}
 
-// class ToDoList extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       pendingValue:'',
-//       list:[
-//         {text:'sweeping floor', state:false},
-//       ],
-//     };
+class ToDoList extends Component {
+  constructor(props) {
+    super(props);
 
-//     this.addItem = this.addItem.bind(this);
-//     this.changePendingValue = this.changePendingValue.bind(this);
-//   }
+    this.state = {
+      pendingValue:'',
+      list:[
+        {text:'sweeping floor', state:false},
+      ],
+    };
 
-//   changePendingValue(e){
-//     this.setState({
-//       pendingValue:e.target.value
-//     });
-//   }
+    this.addItem = this.addItem.bind(this);
+    this.changePendingValue = this.changePendingValue.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
 
-//   addItem(){
-//     this.setState((state) => {
-//       state.list.push({text:this.state.pendingValue, state:false});
-//     });
+  changePendingValue(e){
+    this.setState({
+      pendingValue:e.target.value
+    });
+  }
 
-//     this.setState({
-//       pendingValue:''
-//     })
-//   }
+  addItem(){
+    this.setState((state) => {
+      state.list.push({text:this.state.pendingValue, state:false});
+    });
 
-//   render() { 
-//     return (
-//       <div>
-//         <input type="text" value={this.state.pendingValue} className="p-2" onChange={this.changePendingValue}/>
-//         <button className="bg-blue-400 p-2 ml-2 rounded text-white" onClick={this.addItem}>add</button>
+    this.setState({
+      pendingValue:''
+    })
+  }
 
-//         <ul className='flex flex-col'>
-//           {this.state.list.map((i, index) => <CheckItem text={i.text} state={i.state} key={index}></CheckItem>)}
-//         </ul>
-//       </div>
-//     );
-//   }
-// }
+  toggle(value, index){
+    const copiedList = JSON.parse(JSON.stringify(this.state.list));
+
+    copiedList.splice(index, index + 1, {
+      text:copiedList[index].text,
+      state:value
+    });
+
+    this.setState({
+      list:copiedList
+    });
+  }
+
+  render() { 
+    return (
+      <div>
+        <input type="text" value={this.state.pendingValue} className="p-2" onChange={this.changePendingValue}/>
+        <button className="bg-blue-400 p-2 ml-2 rounded text-white" onClick={this.addItem}>add</button>
+
+        <ul className='flex flex-col'>
+          {this.state.list.map((i, index) => <CheckItem text={i.text} state={i.state} onToggle={this.toggle} key={index} index={index}></CheckItem>)}
+        </ul>
+      </div>
+    );
+  }
+}
 
 // const SimpleButton = styled.button`
 //   border: 2px solid;
@@ -1224,40 +1243,114 @@ function animationHelper(colors){
 
 // --------------------------------------------------useEffect--------------------------------------------------------------
 
-function Profile(){
-  console.log('first line');
+// function Profile(){
+//   console.log('first line');
 
-  const [data, setData] = useState({
-    name:'Alex',
-    age:30,
-    pendingName:''
-  }); 
+//   const [data, setData] = useState({
+//     name:'Alex',
+//     age:30,
+//     pendingName:''
+//   }); 
 
-  useEffect(() => {
-    console.log('useEffect');
+//   useEffect(() => {
+//     console.log('useEffect');
 
-    if(data.name === 'Emma'){
-      alert('Oh I know her.');
-    }
-  });
+//     if(data.name === 'Emma'){
+//       alert('Oh I know her.');
+//     }
+//   });
 
-  return (
-    <div>
-      <div>{JSON.stringify(data)}</div>
+//   return (
+//     <div>
+//       <div>{JSON.stringify(data)}</div>
 
-      <input type="text" onChange={(e) => {data.pendingName = e.target.value}}/>
+//       <input type="text" onChange={(e) => {data.pendingName = e.target.value}}/>
 
-      <SimpleButton click={() => {
-                            setData((prev) => {return {...prev, name:data.pendingName}})
-                          }} class='w-fit'>change Name</SimpleButton>
-    </div>
-  )
+//       <SimpleButton click={() => {
+//                             setData((prev) => {return {...prev, name:data.pendingName}})
+//                           }} class='w-fit'>change Name</SimpleButton>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------life cycle(take WeatherForecast and BarChart for example)-------------------------------------------------------------
+
+// function App(){
+//   return (
+//     <div className='container'>
+//       <WeatherForecast></WeatherForecast>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------life cycle-------------------------------------------------------------
+class Child extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {  };
+
+    // console.log('child constructor');
+  }
+
+  componentDidMount(){
+    console.log('child did mount');
+    console.log(this.props.message);
+  }
+
+  render() { 
+    console.log('child render');
+
+    return (
+      <div>
+        <h1 className='mb-3'>this is child.</h1>
+
+        <p>{this.props.message}</p>
+      </div>
+    );
+  }
+}
+ 
+class Parent extends Component {
+  constructor(props) {
+    super(props);
+    // this.state = {  };
+    this.state = {
+      message:'this is message from parent constructor'
+    };
+  }
+
+  componentDidMount(){
+    console.log('parent did mount');
+  }
+
+  // async componentDidMount(){
+  //   console.log('parent did mount');
+
+  //   // 這會讓Child render兩次
+  //   this.setState({
+  //     message:await this.getRes()
+  //   });
+  // }
+
+  // getRes(){
+  //   return new Promise((resolve) => {
+  //     resolve('this is res from this.getRes()');
+  //   });
+  // }
+
+  render() { 
+    return (
+      <div>
+        <Child message={this.state.message}></Child>
+      </div>
+    );
+  }
 }
 
 function App(){
   return (
-    <div className='container'>
-      <Profile></Profile>
+    <div>
+      <Parent></Parent>
     </div>
   )
 }
