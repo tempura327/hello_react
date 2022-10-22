@@ -1,5 +1,4 @@
 import React, {Component, createRef, useEffect, useState} from 'react';
-import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 import styled, { css, keyframes } from 'styled-components'; 
 // import BarChart from './BarChart';
 // import WeatherForecast from './WeatherForecast';
@@ -1284,44 +1283,44 @@ function animationHelper(colors){
 // }
 
 // ---------------------------------------------------life cycle-------------------------------------------------------------
-class Child extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {  };
+// class Child extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
 
-    // console.log('child constructor');
-  }
+//     // console.log('child constructor');
+//   }
 
-  componentDidMount(){
-    console.log('child did mount');
-    console.log(this.props.message);
-  }
+//   componentDidMount(){
+//     console.log('child did mount');
+//     console.log(this.props.message);
+//   }
 
-  render() { 
-    console.log('child render');
+//   render() { 
+//     console.log('child render');
 
-    return (
-      <div>
-        <h1 className='mb-3'>this is child.</h1>
+//     return (
+//       <div>
+//         <h1 className='mb-3'>this is child.</h1>
 
-        <p>{this.props.message}</p>
-      </div>
-    );
-  }
-}
+//         <p>{this.props.message}</p>
+//       </div>
+//     );
+//   }
+// }
  
-class Parent extends Component {
-  constructor(props) {
-    super(props);
-    // this.state = {  };
-    this.state = {
-      message:'this is message from parent constructor'
-    };
-  }
+// class Parent extends Component {
+//   constructor(props) {
+//     super(props);
+//     // this.state = {  };
+//     this.state = {
+//       message:'this is message from parent constructor'
+//     };
+//   }
 
-  componentDidMount(){
-    console.log('parent did mount');
-  }
+//   componentDidMount(){
+//     console.log('parent did mount');
+//   }
 
   // async componentDidMount(){
   //   console.log('parent did mount');
@@ -1338,21 +1337,89 @@ class Parent extends Component {
   //   });
   // }
 
-  render() { 
-    return (
-      <div>
-        <Child message={this.state.message}></Child>
-      </div>
-    );
-  }
-}
+//   render() { 
+//     return (
+//       <div>
+//         <Child message={this.state.message}></Child>
+//       </div>
+//     );
+//   }
+// }
 
-function App(){
+// function App(){
+//   return (
+//     <div>
+//       <Parent></Parent>
+//     </div>
+//   )
+// }
+// ----------------------------------------------------------HOC------------------------------------------------------
+// function
+const withDynamicButtonBgAndColor = (WrapComponent, type) => {
+  return (props) => {
+    return <WrapComponent className={type} {...props} />
+  };
+};
+
+const withButtonBgAndColor2 = (WrapComponent) => {
+  return (props) => (
+    <WrapComponent {...props}/>
+  );
+};
+
+// ---------------------------------------
+// component
+
+const BaseButton = (props) => {
+  return <button className={`border-solid border-2 p-2 ${props.className || ''}`}>BaseButton</button>;
+};
+
+const AnotherBaseButton = (props) => {
+  return <button {...props}>AnotherBaseButton</button>;
+};
+
+// 組件
+const WithButtonBgAndColor = (WrapComponent) => {
+  return (props) => (
+    <WrapComponent {...props}></WrapComponent>
+  );
+};
+
+// ---------------------------------------
+const NewButton0 = WithButtonBgAndColor(AnotherBaseButton);
+const NewButton1 = WithButtonBgAndColor(BaseButton);
+const NewButton2 = withButtonBgAndColor2(AnotherBaseButton);
+const NewButton3 = withButtonBgAndColor2(BaseButton);
+
+const NewButton4 = withDynamicButtonBgAndColor(
+  BaseButton,
+  'bg-indigo-700 text-blue-200',
+);
+const NewButton5 = withDynamicButtonBgAndColor(
+  AnotherBaseButton,
+  "bg-green-400 text-white"
+);
+
+
+function App() {
   return (
-    <div>
-      <Parent></Parent>
+    <div className="container">
+      <p>base component</p>
+      <BaseButton></BaseButton>
+
+      <p className='mt-6'>function component回傳組件</p>
+      <NewButton1 className='bg-blue-400'></NewButton1>
+      <NewButton0 className='bg-pink-400'></NewButton0>
+
+      <p className='mt-6'>function回傳組件</p>
+      <NewButton3 className='bg-violet-800'></NewButton3>
+      <NewButton2 className='bg-gray-400'></NewButton2>
+      
+      <p className='mt-6'>function回傳組件</p>
+      <NewButton4 className='bg-yellow-400'></NewButton4>
+      <NewButton5></NewButton5>
     </div>
-  )
+  );
 }
 
 export default App;
