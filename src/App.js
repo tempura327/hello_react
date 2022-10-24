@@ -1,7 +1,220 @@
 import React, {Component, createRef, useEffect, useState} from 'react';
-import styled, { css, keyframes } from 'styled-components'; 
-// import BarChart from './BarChart';
-// import WeatherForecast from './WeatherForecast';
+import styled, { css, keyframes } from 'styled-components';
+
+import Button from '@mui/material/Button';
+import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Input from '@mui/material/Input';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import AddIcon from '@mui/icons-material/Add';
+
+// --------------------------------------------------------useState--------------------------------------------------------
+
+// function Calculator(){
+//   const [num, setNum] = useState(0);
+
+//   return (
+//     <div>
+//       <p>current number us {num}</p>
+
+//       <SimpleButton click={() => {setNum(num + 1)}} class='w-fit'></SimpleButton>
+//     </div>
+//   )
+// }
+
+
+// --------------------------------------------------------useReducer--------------------------------------------------------
+// function Counter0(){
+//   const [count, setCount] = useState(0);
+//   const [multiplier, setMultiplier] = useState(3);
+
+//   return (
+//     <div>
+//       <p className='mb-3'>Count: {count}</p>
+ 
+//       <label>multiplier: </label>
+//       <input type="text" value={multiplier} onChange={(e) => {setMultiplier(e.target.value)}}/>
+
+//       <SimpleButton class='ml-3' color='green' click={() => setCount(count - 1)}>-</SimpleButton>
+//       <SimpleButton class='ml-3' color='green' click={() => setCount(count + 1)}>+</SimpleButton>
+//       <SimpleButton class='ml-3' color='green' click={() => setCount(count * multiplier)}>×</SimpleButton>
+//     </div>
+//   );
+// }
+
+// // 使用reducer改寫
+
+// function reducer(state, action) {
+//   const map = {
+//     increment:{...state ,count: state.count + 1},
+//     decrement:{...state ,count: state.count - 1},
+//     multiply:{...state, count: state.count * state.multiplier},
+//     setMultiplier:{...state, multiplier: action.value}
+//   };
+
+//   return map[action.type];
+// }
+
+// function Counter() {
+//   const [state, dispatch] = useReducer(reducer, {count: 0, multiplier:3});
+//   return (
+//     <div>
+//       <p className='mb-3'>Count: {state.count}</p>
+
+//       <label>multiplier: </label>
+//       <input type="text" value={state.multiplier} onChange={(e) => {dispatch({type: 'setMultiplier', value: e.target.value})}}/>
+
+//       <SimpleButton class='ml-3' click={() => dispatch({type: 'decrement'})}>-</SimpleButton>
+//       <SimpleButton class='ml-3' click={() => dispatch({type: 'increment'})}>+</SimpleButton>
+//       <SimpleButton class='ml-3' click={() => dispatch({type: 'multiply'})}>×</SimpleButton>
+//     </div>
+//   );
+// }
+
+// function App(){
+//   return (
+//     <div className='container'>
+//       <Counter0></Counter0>
+//       <Counter></Counter>
+//     </div>
+//   )
+// }
+
+// --------------------------------------------------useEffect--------------------------------------------------------------
+
+// function Profile(){
+//   console.log('first line');
+
+//   const [data, setData] = useState({
+//     name:'Alex',
+//     age:30,
+//     pendingName:''
+//   }); 
+
+//   useEffect(() => {
+//     console.log('useEffect');
+
+//     if(data.name === 'Emma'){
+//       alert('Oh I know her.');
+//     }
+//   });
+
+//   return (
+//     <div>
+//       <div>{JSON.stringify(data)}</div>
+
+//       <input type="text" onChange={(e) => {data.pendingName = e.target.value}}/>
+
+//       <SimpleButton click={() => {
+//                             setData((prev) => {return {...prev, name:data.pendingName}})
+//                           }} class='w-fit'>change Name</SimpleButton>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------life cycle(take WeatherForecast and BarChart for example)-------------------------------------------------------------
+
+// function App(){
+//   return (
+//     <div className='container'>
+//       <WeatherForecast></WeatherForecast>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------life cycle-------------------------------------------------------------
+// class Child extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+
+//     // console.log('child constructor');
+//   }
+
+//   // componentDidMount(){
+//   //   console.log('child did mount');
+//   //   console.log(this.props.message);
+//   // }
+//   // async componentDidMount(){
+//   //   console.log('child did mount');
+//   //   console.log(await this.props.message);
+//   // }
+//   render() { 
+//     console.log('child render');
+//     console.log(this.props.message);
+
+//     return (
+//       <div>
+//         <h1 className='mb-3'>this is child.</h1>
+
+//         <p>{this.props.message}</p>
+//       </div>
+//     );
+//   }
+// }
+ 
+// class Parent extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+//     // this.state = {
+//     //   message:'this is message from parent constructor'
+//     // };
+//   }
+
+//   // componentDidMount(){
+//   //   console.log('parent did mount');
+//   // }
+
+//   async componentDidMount(){
+//     console.log('parent did mount');
+
+//     // 這會讓Child render兩次
+//     // this.setState({
+//       // message:await this.getRes()
+//     // });
+
+//     const res = await this.getRes();
+
+//     this.setState(() =>{
+//       // console.log('parent setState()');
+
+//       return {
+//         message:res
+//       }
+//     });    
+//   }
+
+//   getRes(){
+//     return new Promise((resolve) => {
+//         resolve('this is res from this.getRes()');
+//       });
+//   }
+
+//   render() { 
+//     return (
+//       <div>
+//         <Child message={this.state.message}></Child>
+//       </div>
+//     );
+//   }
+// }
+
+// function App(){
+//   return (
+//     <div>
+//       {/* <Parent></Parent> */}
+//     </div>
+//   )
+// }
+// 
+
+// ----------------------------------------------------------------------------------------------------------------
+// import SimpleButton from './components/SimpleButton';
+// import BarChart from './components/BarChart';
+// import WeatherForecast from './components/WeatherForecast';
 
 // import logo from './logo.svg';
 
@@ -341,21 +554,7 @@ import styled, { css, keyframes } from 'styled-components';
 // }
 
 // // -------------------------------------------------------------------------------------
-class SimpleButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {  };
-  }
-  
-  render() { 
-    const color = this.props.color || 'blue';
-    const skin = this.props.type === 'outline' ? `border-2 border-solid border-${color}-400 hover:bg-${color}-400 hover:text-white` : `text-white bg-${color}-600 hover:bg-${color}-800`;
 
-    return (
-      <button className={`rounded p-2 ${skin} ${this.props.class}`} onClick={this.props.click}>{this.props.children || 'save'}</button>
-    );
-  }
-}
  
 // class Modal extends Component {
 //   constructor(props) {
@@ -579,7 +778,29 @@ class SimpleButton extends Component {
 
 //     // 一定要使用bind改變this的指向，不然addNum的this會是undefined
 //     this.addNum = this.addNum.bind(this);    
+
+//     // console.log('child constructor');
 //   }
+
+
+//   // hooks
+//   // componentDidMount(){
+//   //   console.log('child componentDidMount'); // 
+//   // }
+//   // static getDerivedStateFromProps(props, state) {
+//   //   console.log(props);
+//   //   console.log(state);
+    
+//   //   if (props.num !== state.num) {
+//   //       return {
+//   //           age: 26 //這邊新增一個 age 屬性，也會增加在 state 裡面
+//   //       }
+//   //   }
+//   //   return null
+//   // }   
+//   // componentDidUpdate(){
+//   //   console.log('child componentDidUpdate');
+//   // }
 
 //   // methods
 //   addNum() {
@@ -601,13 +822,14 @@ class SimpleButton extends Component {
 //   }  
 
 //   render() {
+//     // console.log('child render');
 //     return (
 //       <div>
 //         <h2>{this.state.num}</h2>
-//         {/* 千萬不要直接寫onClick={this.addNum()}，這樣會不斷呼叫 */}
-//         <button className='p-3 bg-blue-300 text-white rounded' onClick={this.addNum}>add</button>
-//         <button className='p-3 ml-3 bg-blue-300 text-white rounded' onClick={this.discountNum}>discount</button>
-//         <button className='p-3 ml-3 bg-blue-300 text-white rounded' onClick={this.reset}>reset</button>
+
+//         <SimpleButton color='blue' click={this.addNum}>+{this.props.unit}</SimpleButton>
+//         <SimpleButton color='blue' click={this.discountNum}>-{this.props.unit}</SimpleButton>
+//         <SimpleButton color='blue' click={this.reset}>reset</SimpleButton>
 //       </div>
 //     );
 //   }
@@ -617,13 +839,24 @@ class SimpleButton extends Component {
 //   constructor(props) {
 //     super(props);
 //     this.state = {n:0};
+//     // console.log('parent constructor');
 //   }
 
+//   // hooks
+//   // componentDidMount(){
+//   //   console.log('parent componentDidMount');
+//   // }
+//   // componentDidUpdate(){
+//   //   console.log('parent componentDidUpdate');
+//   // }
+
 //   render() { 
+//     // console.log('parent render');
+
 //     return (
 //       <div className="container">
 //         <Counter unit={2}></Counter>
-//         <Counter unit={5}></Counter>
+//         {/* <Counter unit={5}></Counter> */}
 //       </div>      
 //     );
 //   }
@@ -767,92 +1000,6 @@ class SimpleButton extends Component {
 // }
 
 // --------------------------------controlled component(single controlled element)-----------------------------------------------------
-class CheckItem extends Component{
-  constructor(props){
-    super(props);
-
-    this.state = {
-      // isDone:props.state,
-    }
-
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle(e){
-    // this.setState({
-      // isDone: !this.state.isDone,
-    // })
-    this.props.onToggle(Boolean(e.target.value), this.props.index);
-  }
-
-  render(){
-    return (
-      <div className="inline">
-        <input type="checkbox" checked={this.props.state} value={this.props.state} onChange={this.toggle} disabled={this.props.state} className="mr-2" />
-        <label className={this.props.state? 'line-through' : ''}>{this.props.text}</label>
-      </div>
-    )
-  }
-}
-
-class ToDoList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      pendingValue:'',
-      list:[
-        {text:'sweeping floor', state:false},
-      ],
-    };
-
-    this.addItem = this.addItem.bind(this);
-    this.changePendingValue = this.changePendingValue.bind(this);
-    this.toggle = this.toggle.bind(this);
-  }
-
-  changePendingValue(e){
-    this.setState({
-      pendingValue:e.target.value
-    });
-  }
-
-  addItem(){
-    this.setState((state) => {
-      state.list.push({text:this.state.pendingValue, state:false});
-    });
-
-    this.setState({
-      pendingValue:''
-    })
-  }
-
-  toggle(value, index){
-    const copiedList = JSON.parse(JSON.stringify(this.state.list));
-
-    copiedList.splice(index, index + 1, {
-      text:copiedList[index].text,
-      state:value
-    });
-
-    this.setState({
-      list:copiedList
-    });
-  }
-
-  render() { 
-    return (
-      <div>
-        <input type="text" value={this.state.pendingValue} className="p-2" onChange={this.changePendingValue}/>
-        <button className="bg-blue-400 p-2 ml-2 rounded text-white" onClick={this.addItem}>add</button>
-
-        <ul className='flex flex-col'>
-          {this.state.list.map((i, index) => <CheckItem text={i.text} state={i.state} onToggle={this.toggle} key={index} index={index}></CheckItem>)}
-        </ul>
-      </div>
-    );
-  }
-}
 
 // const SimpleButton = styled.button`
 //   border: 2px solid;
@@ -1138,7 +1285,7 @@ function animationHelper(colors){
       background-color: ${colors[4]};
     }
   `;
-}
+} 
 
 // const brown = animationHelper(['#A7A284', '#8a8462', '#716834', '#5a5019', '#433E0E']);
 // const red = animationHelper(['#f87e8a', '#fd3e51', '#dc3545', '#b62d3b', '#91252f']);
@@ -1166,258 +1313,120 @@ function animationHelper(colors){
 //   )
 // }
 
-
-
-// --------------------------------------------------------useState--------------------------------------------------------
-
-// function Calculator(){
-//   const [num, setNum] = useState(0);
-
-//   return (
-//     <div>
-//       <p>current number us {num}</p>
-
-//       <SimpleButton click={() => {setNum(num + 1)}} class='w-fit'></SimpleButton>
-//     </div>
-//   )
-// }
-
-
-// --------------------------------------------------------useReducer--------------------------------------------------------
-// function Counter0(){
-//   const [count, setCount] = useState(0);
-//   const [multiplier, setMultiplier] = useState(3);
-
-//   return (
-//     <div>
-//       <p className='mb-3'>Count: {count}</p>
- 
-//       <label>multiplier: </label>
-//       <input type="text" value={multiplier} onChange={(e) => {setMultiplier(e.target.value)}}/>
-
-//       <SimpleButton class='ml-3' color='green' click={() => setCount(count - 1)}>-</SimpleButton>
-//       <SimpleButton class='ml-3' color='green' click={() => setCount(count + 1)}>+</SimpleButton>
-//       <SimpleButton class='ml-3' color='green' click={() => setCount(count * multiplier)}>×</SimpleButton>
-//     </div>
-//   );
-// }
-
-// // 使用reducer改寫
-
-// function reducer(state, action) {
-//   const map = {
-//     increment:{...state ,count: state.count + 1},
-//     decrement:{...state ,count: state.count - 1},
-//     multiply:{...state, count: state.count * state.multiplier},
-//     setMultiplier:{...state, multiplier: action.value}
-//   };
-
-//   return map[action.type];
-// }
-
-// function Counter() {
-//   const [state, dispatch] = useReducer(reducer, {count: 0, multiplier:3});
-//   return (
-//     <div>
-//       <p className='mb-3'>Count: {state.count}</p>
-
-//       <label>multiplier: </label>
-//       <input type="text" value={state.multiplier} onChange={(e) => {dispatch({type: 'setMultiplier', value: e.target.value})}}/>
-
-//       <SimpleButton class='ml-3' click={() => dispatch({type: 'decrement'})}>-</SimpleButton>
-//       <SimpleButton class='ml-3' click={() => dispatch({type: 'increment'})}>+</SimpleButton>
-//       <SimpleButton class='ml-3' click={() => dispatch({type: 'multiply'})}>×</SimpleButton>
-//     </div>
-//   );
-// }
-
-// function App(){
-//   return (
-//     <div className='container'>
-//       <Counter0></Counter0>
-//       <Counter></Counter>
-//     </div>
-//   )
-// }
-
-// --------------------------------------------------useEffect--------------------------------------------------------------
-
-// function Profile(){
-//   console.log('first line');
-
-//   const [data, setData] = useState({
-//     name:'Alex',
-//     age:30,
-//     pendingName:''
-//   }); 
-
-//   useEffect(() => {
-//     console.log('useEffect');
-
-//     if(data.name === 'Emma'){
-//       alert('Oh I know her.');
-//     }
-//   });
-
-//   return (
-//     <div>
-//       <div>{JSON.stringify(data)}</div>
-
-//       <input type="text" onChange={(e) => {data.pendingName = e.target.value}}/>
-
-//       <SimpleButton click={() => {
-//                             setData((prev) => {return {...prev, name:data.pendingName}})
-//                           }} class='w-fit'>change Name</SimpleButton>
-//     </div>
-//   )
-// }
-
-// ---------------------------------------------------life cycle(take WeatherForecast and BarChart for example)-------------------------------------------------------------
-
-// function App(){
-//   return (
-//     <div className='container'>
-//       <WeatherForecast></WeatherForecast>
-//     </div>
-//   )
-// }
-
-// ---------------------------------------------------life cycle-------------------------------------------------------------
-// class Child extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {  };
-
-//     // console.log('child constructor');
-//   }
-
-//   componentDidMount(){
-//     console.log('child did mount');
-//     console.log(this.props.message);
-//   }
-
-//   render() { 
-//     console.log('child render');
-
-//     return (
-//       <div>
-//         <h1 className='mb-3'>this is child.</h1>
-
-//         <p>{this.props.message}</p>
-//       </div>
-//     );
-//   }
-// }
- 
-// class Parent extends Component {
-//   constructor(props) {
-//     super(props);
-//     // this.state = {  };
-//     this.state = {
-//       message:'this is message from parent constructor'
-//     };
-//   }
-
-//   componentDidMount(){
-//     console.log('parent did mount');
-//   }
-
-  // async componentDidMount(){
-  //   console.log('parent did mount');
-
-  //   // 這會讓Child render兩次
-  //   this.setState({
-  //     message:await this.getRes()
-  //   });
-  // }
-
-  // getRes(){
-  //   return new Promise((resolve) => {
-  //     resolve('this is res from this.getRes()');
-  //   });
-  // }
-
-//   render() { 
-//     return (
-//       <div>
-//         <Child message={this.state.message}></Child>
-//       </div>
-//     );
-//   }
-// }
-
-// function App(){
-//   return (
-//     <div>
-//       <Parent></Parent>
-//     </div>
-//   )
-// }
 // ----------------------------------------------------------HOC------------------------------------------------------
-// function
-const withDynamicButtonBgAndColor = (WrapComponent, type) => {
-  return (props) => {
-    return <WrapComponent className={type} {...props} />
-  };
-};
+// function SimpleButton(props){
+//   const newProps = {...props, className:`${props.className || ''} p-2`};
 
-const withButtonBgAndColor2 = (WrapComponent) => {
-  return (props) => (
-    <WrapComponent {...props}/>
-  );
-};
+//   return <button {...newProps}>{props.children}</button>
+// }
 
-// ---------------------------------------
-// component
+// // HOC(function)
+// function addColorButton(WrapComponent){
+//   return (props) => <WrapComponent {...props}></WrapComponent>
+// }
 
-const BaseButton = (props) => {
-  return <button className={`border-solid border-2 p-2 ${props.className || ''}`}>BaseButton</button>;
-};
+// // HOC(component)
+// function WithColorButton(WrapComponent){
+//   return (props) => <WrapComponent {...props}></WrapComponent>
+// }
 
-const AnotherBaseButton = (props) => {
-  return <button {...props}>AnotherBaseButton</button>;
-};
+// function enhance(WrappedComponent) {
+//   class Enhance extends React.Component {
+//     constructor(props){
+//       super(props);
+//       this.state = {
 
-// 組件
-const WithButtonBgAndColor = (WrapComponent) => {
-  return (props) => (
-    <WrapComponent {...props}></WrapComponent>
-  );
-};
+//       };
+//     }
 
-// ---------------------------------------
-const NewButton0 = WithButtonBgAndColor(AnotherBaseButton);
-const NewButton1 = WithButtonBgAndColor(BaseButton);
-const NewButton2 = withButtonBgAndColor2(AnotherBaseButton);
-const NewButton3 = withButtonBgAndColor2(BaseButton);
+//     render(){
+//       const { extraProp, ...passThroughProps } = this.props;
 
-const NewButton4 = withDynamicButtonBgAndColor(
-  BaseButton,
-  'bg-indigo-700 text-blue-200',
-);
-const NewButton5 = withDynamicButtonBgAndColor(
-  AnotherBaseButton,
-  "bg-green-400 text-white"
-);
+//       return (
+//         <WrappedComponent {...passThroughProps}></WrappedComponent>
+//       )
+//     }
+//   }
+//   // Must know exactly which method(s) to copy :(
+//   // Enhance.staticMethod = WrappedComponent.staticMethod;
+//   return Enhance;
+// }
+ 
+// const BlueButton = addColorButton(SimpleButton);
+// const VioletButton = WithColorButton(SimpleButton); 
+// const IndigoButton = enhance(SimpleButton);
 
+// function App(){
+//   return (
+//     <div className='container py-2'>
+//       <SimpleButton>SimpleButton</SimpleButton>
 
-function App() {
+//       <BlueButton className='bg-blue-600 hover:bg-blue-800 text-white ml-3'>BlueButton</BlueButton>
+
+//       <VioletButton className='bg-violet-600 text-white rounded-md ml-3'  onClick={() => {alert('this is VioletButton')}}>VioletButton</VioletButton>
+
+//       {addColorButton(SimpleButton)({className:'bg-pink-400 text-white rounded-full ml-3', children:'PinkButton'})}
+
+//       <IndigoButton extraProp='dsadasd' onClick={() => {console.log('onClick');}} className='bg-indigo-600 text-white'>bbb</IndigoButton>
+//     </div>
+//   )
+// }
+
+// ------------------------------------------------------------MUI----------------------------------------------------
+
+function ToDoList(props){
   return (
-    <div className="container">
-      <p>base component</p>
-      <BaseButton></BaseButton>
+    <>
+      <div className='flex'>
+        <Input className='mr-2'></Input>
+        {/* <OutlinedInput></OutlinedInput> */}
+        <Button variant="contained" startIcon={<AddIcon />}>add</Button>    
+      </div>
 
-      <p className='mt-6'>function component回傳組件</p>
-      <NewButton1 className='bg-blue-400'></NewButton1>
-      <NewButton0 className='bg-pink-400'></NewButton0>
-
-      <p className='mt-6'>function回傳組件</p>
-      <NewButton3 className='bg-violet-800'></NewButton3>
-      <NewButton2 className='bg-gray-400'></NewButton2>
+      {props.list.map((i, index) => {
+        return <FormControlLabel 
+                  key={index}
+                  control={<Checkbox defaultChecked color='secondary'/>} 
+                  label={i}
+                  sx={{'& .MuiSvgIcon-root': { fontSize: 32 } }}/>
+      })}
       
-      <p className='mt-6'>function回傳組件</p>
-      <NewButton4 className='bg-yellow-400'></NewButton4>
-      <NewButton5></NewButton5>
+    </>
+
+  )
+}
+
+function App(){
+  return (
+    <div className='container'>
+      <Grid container className='mb-4'>
+        <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+        <Typography noWrap>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique aliquam iure accusantium tenetur maxime harum provident, facilis voluptatibus quaerat architecto exercitationem animi quia ut ex distinctio vel error nihil recusandae.</Typography>
+        </Grid>
+
+        <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+          <Typography component='h2' variant="h6" color='blue'>aaa</Typography>
+        </Grid>
+
+        <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+          <div className="item">B</div>
+        </Grid>
+
+        <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+          <div className="item">b</div>
+        </Grid>
+
+        <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+          <div className="item">C</div>
+        </Grid>
+
+        <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+          <div className="item">c</div>
+        </Grid>                
+      </Grid>
+
+      <ToDoList list={['sweeping floor']}></ToDoList>
+
     </div>
   );
 }
