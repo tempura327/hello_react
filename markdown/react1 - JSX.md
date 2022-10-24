@@ -4,7 +4,12 @@
   - [JSX是甚麼](#jsx是甚麼)
   - [嵌入變數](#嵌入變數)
   - [child & function component](#child--function-component)
-  - [React.createElement()](#reactcreateelement)
+  - [React.createElement() & element](#reactcreateelement--element)
+    - [DOM element](#dom-element)
+    - [component element](#component-element)
+  - [render()](#render)
+    - [React](#react)
+    - [Vue](#vue)
   - [參考資料](#參考資料)
 
 ## JSX是甚麼
@@ -132,31 +137,148 @@ Vue對應寫法
 </script>
 ```
 
-## React.createElement()
+## React.createElement() & element
+
+(10/24更新)
+
+React `element`(或稱element)並不是實例，而是`純JS物件`，因為是純物件所以不會指向螢幕上的任何東西
+
+> What’s important is that both child and parent elements are just descriptions and not the actual instances. They don’t refer to anything on the screen when you create them. You can create them and throw them away, and it won’t matter much.
+
+它有type、props、key 3個欄位，其中只有key可以是null
+
+且是`immutable`的，`一旦建立`，`就不能改變`它的屬性。element就像是電影中的一個幀，代表特定時間點的UI。
+
+`props描述實例、DOM node該有的屬性`(ex: component type、children、className)
+
+### DOM element
+
+DOM element並不是瀏覽器的DOM element，是指描述DOM node的React element
+
+其type屬性是string，type會轉為tag name，props則會變成相應的屬性
+
+例如JSX長這樣
 
 ```js
-const element = (
-    <h1 className="container">
-        Hello React
-    </h1>
-);
+function App(){
+    return (
+        <div className='container'>
+            <button className='bg-blue-600 text-white rounded'>
+                <span>BlueButton</span>
+            </button>        
+        </div>
+    );
+}
 ```
 
-babel會將JSX編譯，變成呼叫React.createElement()的程式
+經由babel編譯後，變成呼叫React.createElement()的函式，這個函式會回傳React element
+
+也就是說JSX只是createElement()的語法糖
 
 ```js
 const element = React.createElement(
-    'h1',
-    {className: 'container'},
-    'Hello React'
+    'button',
+    {className: 'bg-blue-600 text-white rounded'},
+    <span>BlueButton</span>
 )
 ```
 
-最後會得到一個物件
+![element 1](https://static.coderbridge.com/img/tempura327/7588178562b34d379cb84daabb0b7dc8.png)
 
-![react jsx](https://static.coderbridge.com/img/tempura327/351cbda0e0c34ac49f0618a4ede0c98d.png)
+```js
+{
+  type: 'button',
+  props: {
+    className: 'bg-blue-600 text-white rounded',
+    children: {
+      type: 'span',
+      props: {
+        children: 'BlueButton'
+      }
+    }
+  }
+}
+```
 
-和Vue的render function也差不多
+render()將其轉換成HTML
+
+> To render a React element, first pass the DOM element to ReactDOM.createRoot(), then pass the React element to root.render()
+
+```html
+<button class='bg-blue-600 text-white rounded'>
+    <span>BlueButton</span>
+</button>
+```
+
+### component element
+
+DOM element是指描述component的React element，其type屬性是function或class component
+
+例如class component長這樣
+
+```js
+class SimpleButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {  };
+  }
+  
+  render() { 
+    return (
+      <button className={`rounded p-2 ${this.props.className}`} onClick={this.props.click}>{this.props.children || 'save'}</button>
+    );
+  }
+}
+
+function App(){
+  return (
+    <div>
+      <SimpleButton className='bg-violet-400 hover:bg-violet-600 text-white'>VioletButton</SimpleButton>
+    </div>
+  );
+}
+```
+
+babel編譯後得到的element
+
+![element 2](https://static.coderbridge.com/img/tempura327/a83a234666ba4c36bcc16937c53ed6fe.png)
+
+```js
+{
+  type: SimpleButton,
+  props: {
+    className:'bg-violet-400 hover:bg-violet-600 text-white',
+    children: 'VioletButton'
+  }
+}
+```
+
+轉換成HTML
+
+```html
+<button class="rounded p-2 bg-violet-400 hover:bg-violet-600 text-white">VioletButton</button>
+```
+
+## render()
+
+### React
+
+render()Root底下的方法，它接受ReactElement或JSXElementConstructor(回傳component或ReactElement的函式)作為參數
+
+```js
+// JSX會被babel編譯成呼叫createElementK的函式，這個函式會回傳element
+const element = <h1>Hello React</h1>;
+```
+
+```js
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(element);
+```
+
+### Vue
+
+Vue的render function也差不多
 
 render function，縮寫為h()
 
@@ -187,5 +309,9 @@ const vnode = h(
 
 ## 參考資料
 
-[React - JSX](https://zh-hant.reactjs.org/docs/introducing-jsx.html)
+[React - JSX](https://zh-hant.reactjs.org/docs/introducing-jsx.html)  
+[React - Rendering an Element into the DOM](https://reactjs.org/docs/rendering-elements.html)  
+[React - React Components, Elements, and Instances](https://reactjs.org/blog/2015/12/18/react-components-elements-and-instances.html)  
+[React - 不使用 JSX 開發 React](https://zh-hant.reactjs.org/docs/react-without-jsx.html)  
+
 [Vue - Render Functions & JSX](https://vuejs.org/guide/extras/render-function.html)
