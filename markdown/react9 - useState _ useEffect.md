@@ -4,7 +4,6 @@
   - [React的hook](#react的hook)
   - [useState](#usestate)
     - [基本](#基本)
-    - [setState後merge](#setstate後merge)
     - [多個useState](#多個usestate)
   - [useEffect](#useeffect)
     - [基本](#基本-1)
@@ -19,7 +18,7 @@ state hook(useState)讓function component能用state
 
 effect hook(useEffect)則讓function component能用side effect，它可以視為componentDidMount、componentDidUpdate和componentWillUnmount的組合
 
-在function component中useState、useEffect都`可以有多個`，它們會依排放順序被執行
+在function component中`useState、useEffect`都`可以有多個`，它們會依排放順序被執行
 
 但如果state邏輯變得複雜，推薦推薦用reducer
 
@@ -31,130 +30,151 @@ effect hook(useEffect)則讓function component能用side effect，它可以視�
 
 set function會將接收的值更新到state，並且重新渲染組件
 
-```js
-function Calculator(){
-  const [num, setNum] = useState(0);
-
-  return (
-    <div>
-      <p>current number us {num}</p>
-
-      <SimpleButton click={() => {setNum(num + 1)}} class='w-fit'></SimpleButton>
-    </div>
-  )
-}
-```
-
-### setState後merge
-
-`function component的setState`並不會像class component的會進行merge，它`只會重新賦值`
+另外需要注意`function component的setState`並不會像class component的會進行merge，它`只會重新賦值`
 
 如果想要進行物件的merge則必須改寫一下
 
 ```js
-function Profile(){
-  const [data, setData] = useState({
-    name:'Alex',
-    age:30
-  }); 
+import {useState} from 'react';
 
-  let pendingName = '';
+import AddIcon from '@mui/icons-material/Add';
+
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
+function ToDoList_MUI(props){
+  const [pendingValue, setPendingValue] = useState('');
+  const [list, setList] = useState([
+    {text:'sweeping floor', state:false},
+  ]);
+
+  const changePendingValue = (e) => {
+    setPendingValue(() => e.target.value);
+  }
+
+  const addItem = () => {
+    // 使用previous state的context進行merge
+    setList((prev) => [...prev, {text:pendingValue, state:false}]);
+    setPendingValue('');
+  }
+
+  const toggle = (e, index) => {
+    const copiedList = JSON.parse(JSON.stringify(list));
+
+    copiedList[index] = {text:list[index].text, state:e.target.checked}
+
+    setList(copiedList);
+  }
 
   return (
-    <div>
-      <div>{JSON.stringify(data)}</div>
+    <>
+      <div className='flex'>
+        <Input className='mr-2' value={pendingValue} onChange={changePendingValue}></Input>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={addItem}>add</Button>    
+      </div>
 
-      <input type="text" onChange={(e) => {pendingName = e.target.value}}/>
-
-      <SimpleButton click={() => {
-        setData((prev) => {return {...prev, name:pendingName}})
-      }} class='w-fit'>change Name</SimpleButton>
-    </div>
+      <Stack>
+        {list.map((i, index) => {
+          return <FormControlLabel 
+                    key={index}
+                    control={<Checkbox checked={i.state} disabled={i.state} onChange={(e) => {toggle(e, index)}} color='info'/>} 
+                    label={i.text}
+                    sx={{'& .MuiSvgIcon-root': { fontSize: 32 } }}/>
+        })}
+      </Stack>
+    </>
   )
 }
+
+export default ToDoList_MUI;
 ```
 
-另外setState只在初次渲染時將值初始化
+另外`setState`只在初次渲染時`將值初始化
 
-資料更新使得DOM時的渲染只會讀取值，而不會再次初始化
+資料`更新`使得DOM時的渲染只會讀取值，而`不會再次初始化`
 
-![](https://static.coderbridge.com/img/tempura327/d7e3cffa1ae24ec98f9a4e4bda34e6a1.gif)
-
-```js
-function Profile(){
-  console.log('first line');
-
-  const [data, setData] = useState(() => {
-    console.log('use state')
-    return {
-      name:'Alex',
-      age:30
-    }
-  }); 
-
-  // 省略
-}
-```
+<!-- gif2 -->
 
 ### 多個useState
 
 前段中有提到一個function component內可以有`多個useState`，但也可以使用`useReducer代替`
 
-```js
-function Counter(){
-  const [count, setCount] = useState(0);
-  const [multiplier, setMultiplier] = useState(3);
-
-  return (
-    <div>
-      <p className='mb-3'>Count: {count}</p>
- 
-      <label>multiplier: </label>
-      <input type="text" value={multiplier} onChange={(e) => {setMultiplier(e.target.value)}}/>
-
-      <SimpleButton class='ml-3' color='green' click={() => setCount(count - 1)}>-</SimpleButton>
-      <SimpleButton class='ml-3' color='green' click={() => setCount(count + 1)}>+</SimpleButton>
-      <SimpleButton class='ml-3' color='green' click={() => setCount(count * multiplier)}>×</SimpleButton>
-    </div>
-  );
-}
-```
-
 使用useReducer改寫
 
 ```js
-function reducer(state, action) {
+import {useReducer} from 'react';
+
+import Toast from './Toast';
+
+import AddIcon from '@mui/icons-material/Add';
+
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+function reducer(state, action){
   const map = {
-    increment:{...state ,count: state.count + 1},
-    decrement:{...state ,count: state.count - 1},
-    multiply:{...state, count: state.count * state.multiplier},
-    setMultiplier:{...state, multiplier: action.value}
-  };
+    setPendingValue:{...state, pendingValue:action.value},
+    setList:{...state, list:action.value},
+    setIsErrorShow:{...state, isErrorShow:action.value},
+  }
 
   return map[action.type];
 }
 
-function Counter() {
-  const [state, dispatch] = useReducer(reducer, {count: 0, multiplier:3});
+function ToDoList_MUI(props){
+  const [state, dispatch] = useReducer(reducer, {
+    pendingValue: '',
+    list:[
+      {text:'sweeping floor', state:false},
+    ],
+  });
+
+
+  const changePendingValue = (e) => {
+    dispatch({type: 'setPendingValue', value: e.target.value})
+  }
+
+  const addItem = () => {
+    dispatch({type:'setList', value:[...state.list, {text:state.pendingValue, state:false}]});
+    dispatch({type: 'setPendingValue', value: ''});
+  }
+
+  const toggle = (e, index) => {
+    const copiedList = JSON.parse(JSON.stringify(state.list));
+
+    copiedList[index] = {text:state.list[index].text, state:e.target.checked}
+
+    dispatch({type: 'setList', value: copiedList});
+  }
+
   return (
-    <div>
-      <p className='mb-3'>Count: {state.count}</p>
+    <>
+      <div className='flex'>
+        <Input className='mr-2' value={state.pendingValue} onChange={changePendingValue}></Input>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={addItem}>add</Button>    
+      </div>
 
-      <label>multiplier: </label>
-      <input type="text" value={state.multiplier} onChange={(e) => {dispatch({type: 'setMultiplier', value: e.target.value})}}/>
-
-      {/* useReducer(reducer, undefined, reducer)雖然能摸擬 Redux 的行為，但官方不鼓勵 */}
-      <SimpleButton class='ml-3' click={() => dispatch({type: 'decrement'})}>-</SimpleButton>
-      <SimpleButton class='ml-3' click={() => dispatch({type: 'increment'})}>+</SimpleButton>
-      <SimpleButton class='ml-3' click={() => dispatch({type: 'multiply'})}>×</SimpleButton>
-    </div>
-  );
+      <Stack>
+        {state.list.map((i, index) => {
+          return <FormControlLabel 
+                    key={index}
+                    control={<Checkbox checked={i.state} disabled={i.state} onChange={(e) => {toggle(e, index)}} color='info'/>} 
+                    label={i.text}
+                    sx={{'& .MuiSvgIcon-root': { fontSize: 32 } }}/>
+        })}
+      </Stack>
+    </>
+  )
 }
+
+export default ToDoList_MUI;
 ```
-
-![](https://static.coderbridge.com/img/tempura327/eaac7aeb1fbf493c8bd68a5eb1c37143.gif)
-
-兩者呈現的結果會一樣
 
 ## useEffect
 
@@ -172,84 +192,139 @@ side effect分為需要清除的、不需清除的2種
 
 ### 基本
 
-![](https://static.coderbridge.com/img/tempura327/c0cdaf5b0a2a4a0fb32d850e6cac1504.gif)
-
 ```js
-function Profile(){
-  console.log('first line');
-
-  const [data, setData] = useState({
-    name:'Alex',
-    age:30,
-    pendingName:''
-  }); 
+function ToDoList_MUI(props){
+  // 略
 
   useEffect(() => {
-    console.log('useEffect');
-
-    if(data.name === 'Emma'){
-      alert('Oh I know her.');
+    if(state.list.length > 5){
+      dispatch({type:'setIsWarningShow', value:true});
     }
   });
 
-  return (
-    <div>
-      <div>{JSON.stringify(data)}</div>
-
-      <input type="text" onChange={(e) => {data.pendingName = e.target.value}}/>
-
-      <SimpleButton click={() => {
-        setData((prev) => {return {...prev, name: data.pendingName}})
-      }} class='w-fit'>change Name</SimpleButton>
-    </div>
-  )
+  // 略
 }
 ```
 
-![](https://static.coderbridge.com/img/tempura327/06e636c0d9364e1daadaddb5b200035d.gif)
+<!-- gif1 -->
 
-但仔細看的話會發現不論新值是否異於舊值，useEffect都會被呼叫，這可能導致效能問題
+Toast怎麼超過5就卡在那邊不關掉🤔
+
+仔細看的話會發現useEffect不斷被呼叫，這是因為沒有設置dependency array，這會導致效能問題
 
 ### 忽略effect
 
-上一個例子我們發現新值是否異於舊值，useEffect都會被呼叫，使用dependency array解決這個問題
+使用dependency array解決useEffect不斷被呼叫的問題
 
 React會對比新值與dependency array，若兩者值相同將忽略這個side effect
 
-![](https://static.coderbridge.com/img/tempura327/3e92b77e76de48729c12446df63aee51.gif)
+```js
+function ToDoList_MUI(props){
+  // 略
+
+    useEffect(() => {
+    if(state.list.length > 5){
+      dispatch({type:'setIsWarningShow', value:true});
+    }
+
+  }, [state.list.length]); // 相當於list更新時執行componentDidUpdate，若設為[]則相當於componentDidMount
+
+  // 略
+}
+```
+
+完整版
+
+<!-- gif99 -->
 
 ```js
-function Profile(){
-  console.log('first line');
-  
-  const [data, setData] = useState({
-    name:'Alex',
-    age:30,
-    pendingName:''
-  }); 
+import {useReducer, useEffect} from 'react';
+
+import Toast from './Toast';
+
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+import AddIcon from '@mui/icons-material/Add';
+
+function reducer(state, action){
+  const map = {
+    setPendingValue:{...state, pendingValue:action.value},
+    setList:{...state, list:action.value},
+    setIsWarningShow:{...state, isWarningShow:action.value},
+    setIsErrorShow:{...state, isErrorShow:action.value},
+  }
+
+  return map[action.type];
+}
+
+function ToDoList_MUI(props){
+  const [state, dispatch] = useReducer(reducer, {
+    pendingValue: '',
+    list:[
+      {text:'sweeping floor', state:false},
+    ],
+    isWarningShow:false,
+    isErrorShow:false,
+  });
+
+
+  const changePendingValue = (e) => {
+    dispatch({type: 'setPendingValue', value: e.target.value});
+    dispatch({type: 'setIsErrorShow', value: false});
+  }
+
+  const addItem = () => {
+    if(!state.pendingValue){
+      dispatch({type:'setIsErrorShow', value:true});
+      return;
+    };
+
+    dispatch({type:'setList', value:[...state.list, {text:state.pendingValue, state:false}]});
+    dispatch({type: 'setPendingValue', value: ''});
+  }
 
   useEffect(() => {
-    console.log('useEffect');
-
-    if(data.name === 'Emma'){
-      alert('Oh I know her.');
+    if(state.list.length > 5){
+      dispatch({type:'setIsWarningShow', value:true});
     }
-  }, [data.name]);
+
+  }, [state.list.length]);  // 相當於list更新時執行componentDidUpdate
+
+  const toggle = (e, index) => {
+    const copiedList = JSON.parse(JSON.stringify(state.list));
+
+    copiedList[index] = {text:state.list[index].text, state:e.target.checked}
+
+    dispatch({type: 'setList', value: copiedList});
+  }
 
   return (
-    <div>
-      <div>{JSON.stringify(data)}</div>
+    <>
+      <div className='flex'>
+        <Input className='mr-2' value={state.pendingValue} error={state.isErrorShow} onChange={changePendingValue}></Input>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={addItem}>add</Button>    
+      </div>
 
-      <p>{data.name}</p>
+      <Toast message='todo items > 5' isShow={state.isWarningShow} variant='warning' onClose={() => {dispatch({type:'setIsWarningShow', value:false})}}></Toast>
 
-      <input type="text" onChange={(e) => {data.pendingName = e.target.value}}/>
-
-      <SimpleButton click={() => {
-                            setData((prev) => {return {...prev, name:data.pendingName}})
-                          }} class='w-fit'>change Name</SimpleButton>
-    </div>
+      <Stack>
+        {state.list.map((i, index) => {
+          return <FormControlLabel 
+                    key={index}
+                    control={<Checkbox checked={i.state} disabled={i.state} onChange={(e) => {toggle(e, index)}} color='info'/>} 
+                    label={i.text}
+                    sx={{'& .MuiSvgIcon-root': { fontSize: 32 } }}/>
+        })}
+      </Stack>
+    </>
   )
 }
+
+export default ToDoList_MUI;
 ```
 
 ## 參考資料
@@ -261,3 +336,4 @@ function Profile(){
 [React - 使用 Effect Hook](https://zh-hant.reactjs.org/docs/hooks-effect.html)  
 [React - Component 生命週期](https://zh-hant.reactjs.org/docs/react-component.html#the-component-lifecycle)  
 [[React Hook 筆記] 從最基本的useState, useEffect 開始](https://medium.com/hannah-lin/react-hook-%E7%AD%86%E8%A8%98-%E5%BE%9E%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84-hook-%E9%96%8B%E5%A7%8B-usestate-useeffect-fee6582d8725)
+["This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render."](https://stackoverflow.com/questions/57853288/react-warning-maximum-update-depth-exceeded)
