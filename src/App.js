@@ -1,14 +1,7 @@
 import React, {Component, createRef, useEffect, useState} from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-import Button from '@mui/material/Button';
-import Grid from "@mui/material/Grid";
-import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Input from '@mui/material/Input';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import AddIcon from '@mui/icons-material/Add';
+// import Grid from "@mui/material/Grid";
 
 // --------------------------------------------------------useState--------------------------------------------------------
 
@@ -1372,34 +1365,14 @@ function animationHelper(colors){
 //   )
 // }
 
-// ------------------------------------------------------------MUI----------------------------------------------------
-
-function ToDoList(props){
-  return (
-    <>
-      <div className='flex'>
-        <Input className='mr-2'></Input>
-        {/* <OutlinedInput></OutlinedInput> */}
-        <Button variant="contained" startIcon={<AddIcon />}>add</Button>    
-      </div>
-
-      {props.list.map((i, index) => {
-        return <FormControlLabel 
-                  key={index}
-                  control={<Checkbox defaultChecked color='secondary'/>} 
-                  label={i}
-                  sx={{'& .MuiSvgIcon-root': { fontSize: 32 } }}/>
-      })}
-      
-    </>
-
-  )
-}
+// ------------------------------------------------------------MUI + HOC----------------------------------------------------
 
 function App(){
+  
+
   return (
     <div className='container'>
-      <Grid container className='mb-4'>
+      {/* <Grid container className='mb-4'>
         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
         <Typography noWrap>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique aliquam iure accusantium tenetur maxime harum provident, facilis voluptatibus quaerat architecto exercitationem animi quia ut ex distinctio vel error nihil recusandae.</Typography>
         </Grid>
@@ -1423,9 +1396,8 @@ function App(){
         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
           <div className="item">c</div>
         </Grid>                
-      </Grid>
+      </Grid> */}
 
-      <ToDoList list={['sweeping floor']}></ToDoList>
 
     </div>
   );
