@@ -2,7 +2,8 @@ import React, {Component, createRef, useEffect, useState} from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
-import ToDoList_MUI from './components/TodoList_MUI';
+// import ToDoList_MUI from './components/TodoList_MUI';
+import Apollo from './components/Apollo';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1366,42 +1367,47 @@ function animationHelper(colors){
 // }
 
 // ------------------------------------------------------------MUI + HOC----------------------------------------------------
+// function App(){
+//   return (
+//     <div className='container'>
+//       <Grid container className='mb-4'>
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+//         <Typography noWrap>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique aliquam iure accusantium tenetur maxime harum provident, facilis voluptatibus quaerat architecto exercitationem animi quia ut ex distinctio vel error nihil recusandae.</Typography>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+//           <Typography component='h2' variant="h6" color='blue'>aaa</Typography>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+//           <div className="item">B</div>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+//           <div className="item">b</div>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+//           <div className="item">C</div>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+//           <div className="item">c</div>
+//         </Grid>                
+//       </Grid>
+
+//       <ToDoList_MUI></ToDoList_MUI>
+
+//     </div>
+//   );
+// }
 
 function App(){
-  
-
   return (
     <div className='container'>
-      {/* <Grid container className='mb-4'>
-        <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
-        <Typography noWrap>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique aliquam iure accusantium tenetur maxime harum provident, facilis voluptatibus quaerat architecto exercitationem animi quia ut ex distinctio vel error nihil recusandae.</Typography>
-        </Grid>
-
-        <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
-          <Typography component='h2' variant="h6" color='blue'>aaa</Typography>
-        </Grid>
-
-        <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
-          <div className="item">B</div>
-        </Grid>
-
-        <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
-          <div className="item">b</div>
-        </Grid>
-
-        <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
-          <div className="item">C</div>
-        </Grid>
-
-        <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
-          <div className="item">c</div>
-        </Grid>                
-      </Grid> */}
-
-      <ToDoList_MUI></ToDoList_MUI>
-
+      <Apollo></Apollo>
     </div>
-  );
+  )
 }
 
 export default App;
