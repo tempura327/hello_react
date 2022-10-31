@@ -3,7 +3,10 @@ import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
 // import ToDoList_MUI from './components/TodoList_MUI';
-import Apollo from './components/Apollo';
+// import Apollo from './components/Apollo';
+// import ApolloTimeline from './components/ApolloTimeline';
+import ApolloRefetch from './components/ApolloRefetch';
+// import MakeStyles from './components/MakeStyles';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1402,10 +1405,14 @@ function animationHelper(colors){
 //   );
 // }
 
+// ------------------------------------------------------------GraphQL & Apollo client----------------------------------------------------
+
+
 function App(){
   return (
     <div className='container'>
-      <Apollo></Apollo>
+      {/* <ApolloTimeline></ApolloTimeline> */}
+      <ApolloRefetch></ApolloRefetch>
     </div>
   )
 }
