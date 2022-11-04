@@ -5,8 +5,10 @@ import styled, { css, keyframes } from 'styled-components';
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
 // import ApolloTimeline from './components/ApolloTimeline';
-import ApolloRefetch from './components/ApolloRefetch';
-// import MakeStyles from './components/MakeStyles';
+// import ApolloRefetch from './components/ApolloRefetch';
+import PassFunction from './components/PassFunction';
+import SimpleButton from './components/SimpleButton';
+
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1407,12 +1409,29 @@ function animationHelper(colors){
 
 // ------------------------------------------------------------GraphQL & Apollo client----------------------------------------------------
 
+// function App(){
+//   return (
+//     <div className='container'>
+//       <ApolloTimeline></ApolloTimeline>
+//       <ApolloRefetch></ApolloRefetch>
+//     </div>
+//   )
+// }
+
+// --------------------------------------------------------------useState & useEffect 2--------------------------------------------------
 
 function App(){
+  const [isFoo, setIsFoo] = useState(true);
+
+  const foo = () => {console.log('this is foo');};
+  const bar = () => {console.log('this is bar');};
+
   return (
     <div className='container'>
-      {/* <ApolloTimeline></ApolloTimeline> */}
-      <ApolloRefetch></ApolloRefetch>
+      <SimpleButton class='mb-2' click={() => setIsFoo(!isFoo)}>change props</SimpleButton>
+
+      <p>isFoo: {isFoo.toString()}</p>
+      <PassFunction onClick={isFoo? foo : bar}></PassFunction>
     </div>
   )
 }
