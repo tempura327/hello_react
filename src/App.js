@@ -1,13 +1,15 @@
-import React, {Component, createRef, useEffect, useState} from 'react';
+import React, {Component, createRef, useEffect, useState, useRef, useReducer} from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
-// import ToDoList_MUI from './components/TodoList_MUI';
+import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
 // import ApolloTimeline from './components/ApolloTimeline';
 // import ApolloRefetch from './components/ApolloRefetch';
-import PassFunction from './components/PassFunction';
-import SimpleButton from './components/SimpleButton';
+// import PassFunction from './components/PassFunction';
+// import SimpleButton from './components/SimpleButton';
+import Clock from './components/Clock';
+import Calculator from './components/Calculator';
 
 // --------------------------------------------------------useState--------------------------------------------------------
 
@@ -75,7 +77,7 @@ import SimpleButton from './components/SimpleButton';
 // function App(){
 //   return (
 //     <div className='container'>
-//       <Counter0></Counter0>
+//       {/* <Counter0></Counter0> */}
 //       <Counter></Counter>
 //     </div>
 //   )
@@ -1420,18 +1422,32 @@ function animationHelper(colors){
 
 // --------------------------------------------------------------useState & useEffect 2--------------------------------------------------
 
+// function App(){
+//   const [isFoo, setIsFoo] = useState(true);
+
+//   const foo = () => {console.log('this is foo');};
+//   const bar = () => {console.log('this is bar');};
+
+//   return (
+//     <div className='container'>
+//       <SimpleButton class='mb-2' click={() => setIsFoo(!isFoo)}>change props</SimpleButton>
+
+//       <p>isFoo: {isFoo.toString()}</p>
+//       <PassFunction onClick={isFoo? foo : bar}></PassFunction>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------------useState & useEffect3----------------------------------------------------
+
 function App(){
-  const [isFoo, setIsFoo] = useState(true);
-
-  const foo = () => {console.log('this is foo');};
-  const bar = () => {console.log('this is bar');};
-
   return (
-    <div className='container'>
-      <SimpleButton class='mb-2' click={() => setIsFoo(!isFoo)}>change props</SimpleButton>
+    <div>
+      <Clock></Clock>
 
-      <p>isFoo: {isFoo.toString()}</p>
-      <PassFunction onClick={isFoo? foo : bar}></PassFunction>
+      <Calculator></Calculator>
+
+      <ToDoList_MUI></ToDoList_MUI>
     </div>
   )
 }
