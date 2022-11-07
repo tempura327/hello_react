@@ -2,14 +2,14 @@ import React, {Component, createRef, useEffect, useState, useRef, useReducer} fr
 import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
-import ToDoList_MUI from './components/TodoList_MUI';
+// import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
 // import ApolloTimeline from './components/ApolloTimeline';
 // import ApolloRefetch from './components/ApolloRefetch';
 // import PassFunction from './components/PassFunction';
 // import SimpleButton from './components/SimpleButton';
-import Clock from './components/Clock';
-import Calculator from './components/Calculator';
+// import Clock from './components/Clock';
+// import Calculator from './components/Calculator';
 
 // --------------------------------------------------------useState--------------------------------------------------------
 
@@ -1440,14 +1440,96 @@ function animationHelper(colors){
 
 // ---------------------------------------------------------useState & useEffect3----------------------------------------------------
 
+// function App(){
+//   return (
+//     <div>
+//       <Clock></Clock>
+
+//       <Calculator></Calculator>
+
+//       <ToDoList_MUI></ToDoList_MUI>
+//     </div>
+//   )
+// }
+
+// ---------------------------------difference between function component and class component ----------------------------
+function Foo(props){
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(`Foo: ${props.name}`);
+  
+    }, 3000);
+
+  });
+
+  return (
+    <p>name of Foo is {props.name}</p>
+  )
+}
+
+class Bar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
+  }
+
+  showMessage = (user) => {
+    console.log('Followed ' + user);
+  };
+
+  handleClick = () => {
+    const {name} = this.props;
+    setTimeout(() => this.showMessage(name), 3000);
+  };
+
+  componentDidUpdate(){
+    // this.handleClick();
+    
+    const props = this.props;
+
+    setTimeout(() => {
+      console.log(`Bar: ${props.name}`);
+      
+    }, 3000);
+  }
+
+  sayName = (name) => {
+    console.log(`Bar: ${name}`);
+  }
+
+  render() { 
+    return (
+      <div>
+        name of Bar is {this.props.name}
+      </div>
+    );
+  }
+}
+ 
 function App(){
+  const [nickName, setNickName] = useState('Emma');
+  // const [arr, setArr] = useState([1]);
+
   return (
     <div>
-      <Clock></Clock>
+      {/* <Foo name={nickName}></Foo> */}
 
-      <Calculator></Calculator>
+      {/* {
+        arr.map((i, index) => <Bar key={index} name={nickName}></Bar>)
+      } */}
 
-      <ToDoList_MUI></ToDoList_MUI>
+      <Bar name={nickName}></Bar>
+      
+      <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
+        <option value="Alex" key="Alex">Alex</option>
+        <option value="Joyce" key="Joyce">Joyce</option>
+      </select>
+
+      {/* <SimpleButton click={() => {setArr([])}}>clear arr</SimpleButton> */}
+
+      {/* <SimpleButton click={() => {setNickName('Alex')}}>click to change name</SimpleButton> */}
     </div>
   )
 }
