@@ -10,6 +10,7 @@ import styled, { css, keyframes } from 'styled-components';
 // import SimpleButton from './components/SimpleButton';
 // import Clock from './components/Clock';
 // import Calculator from './components/Calculator';
+import ClassMemberList from './components/ClassMemberList';
 
 // --------------------------------------------------------useState--------------------------------------------------------
 
@@ -1453,84 +1454,102 @@ function animationHelper(colors){
 // }
 
 // ---------------------------------difference between function component and class component ----------------------------
-function Foo(props){
-  useEffect(() => {
-    setTimeout(() => {
-      console.log(`Foo: ${props.name}`);
+// function Foo(props){
+//   useEffect(() => {
+//     setTimeout(() => {
+//       console.log(`Foo: ${props.name}`);
   
-    }, 3000);
+//     }, 3000);
 
-  });
+//   });
 
-  return (
-    <p>name of Foo is {props.name}</p>
-  )
-}
+//   return (
+//     <p>name of Foo is {props.name}</p>
+//   )
+// }
 
-class Bar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+// class Bar extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
 
-    };
-  }
+//     };
+//   }
 
-  showMessage = (user) => {
-    console.log('Followed ' + user);
-  };
+//   showMessage = (user) => {
+//     console.log('Followed ' + user);
+//   };
 
-  handleClick = () => {
-    const {name} = this.props;
-    setTimeout(() => this.showMessage(name), 3000);
-  };
+//   handleClick = () => {
+//     const {name} = this.props;
+//     setTimeout(() => this.showMessage(name), 3000);
+//   };
 
-  componentDidUpdate(){
-    // this.handleClick();
+//   componentDidUpdate(){
+//     // this.handleClick();
     
-    const props = this.props;
+//     const props = this.props;
 
-    setTimeout(() => {
-      console.log(`Bar: ${props.name}`);
+//     setTimeout(() => {
+//       console.log(`Bar: ${props.name}`);
       
-    }, 3000);
-  }
+//     }, 3000);
+//   }
 
-  sayName = (name) => {
-    console.log(`Bar: ${name}`);
-  }
+//   sayName = (name) => {
+//     console.log(`Bar: ${name}`);
+//   }
 
-  render() { 
-    return (
-      <div>
-        name of Bar is {this.props.name}
-      </div>
-    );
-  }
-}
+//   render() { 
+//     return (
+//       <div>
+//         name of Bar is {this.props.name}
+//       </div>
+//     );
+//   }
+// }
  
-function App(){
-  const [nickName, setNickName] = useState('Emma');
-  // const [arr, setArr] = useState([1]);
+// function App(){
+//   const [nickName, setNickName] = useState('Emma');
+//   // const [arr, setArr] = useState([1]);
 
-  return (
-    <div>
-      <Foo name={nickName}></Foo>
+//   return (
+//     <div>
+//       <Foo name={nickName}></Foo>
 
-      {/* {
-        arr.map((i, index) => <Bar key={index} name={nickName}></Bar>)
-      } */}
+//       {/* {
+//         arr.map((i, index) => <Bar key={index} name={nickName}></Bar>)
+//       } */}
 
-      <Bar name={nickName}></Bar>
+//       <Bar name={nickName}></Bar>
       
-      <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
-        <option value="Alex" key="Alex">Alex</option>
-        <option value="Joyce" key="Joyce">Joyce</option>
-      </select>
+//       <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
+//         <option value="Alex" key="Alex">Alex</option>
+//         <option value="Joyce" key="Joyce">Joyce</option>
+//       </select>
 
-      {/* <SimpleButton click={() => {setArr([])}}>clear arr</SimpleButton> */}
+//       {/* <SimpleButton click={() => {setArr([])}}>clear arr</SimpleButton> */}
 
-      {/* <SimpleButton click={() => {setNickName('Alex')}}>click to change name</SimpleButton> */}
-    </div>
+//       {/* <SimpleButton click={() => {setNickName('Alex')}}>click to change name</SimpleButton> */}
+//     </div>
+//   )
+// }
+
+// -------------------------------------------useMemo + useReducer--------------------------------------
+
+function App(){
+  return (
+    <ClassMemberList list={[
+      {id:'001', className:'A', name:'Alex'},
+      {id:'002', className:'C', name:'Allen'},
+      {id:'003', className:'B', name:'Amy'},
+      {id:'004', className:'C', name:'Apollo'},
+      {id:'005', className:'C', name:'Bill'},
+      {id:'006', className:'C', name:'Belinda'},
+      {id:'007', className:'A', name:'Cinderella'},
+      {id:'008', className:'B', name:'Danial'},
+      {id:'009', className:'A', name:'Emma'},
+    ]}></ClassMemberList>
   )
 }
 
