@@ -1514,7 +1514,7 @@ function App(){
 
   return (
     <div>
-      {/* <Foo name={nickName}></Foo> */}
+      <Foo name={nickName}></Foo>
 
       {/* {
         arr.map((i, index) => <Bar key={index} name={nickName}></Bar>)
