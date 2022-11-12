@@ -11,10 +11,20 @@ function reducer(state, action){
     return res;
 }
 
-export default function ClassMemberList({list}){
+export default function ClassMemberList(){
     const [state, dispatch] = useReducer(reducer, {
         classList:['A', 'B', 'C'],
-        studentList:list,
+        studentList:[
+            {id:'001', className:'A', name:'Alex'},
+            {id:'002', className:'C', name:'Allen'},
+            {id:'003', className:'B', name:'Amy'},
+            {id:'004', className:'C', name:'Apollo'},
+            {id:'005', className:'C', name:'Bill'},
+            {id:'006', className:'C', name:'Belinda'},
+            {id:'007', className:'A', name:'Cinderella'},
+            {id:'008', className:'B', name:'Danial'},
+            {id:'009', className:'A', name:'Emma'},
+        ],
         className:'A',
         newStudent:{id:'', className:'', name:'',}
     })

@@ -1537,19 +1537,54 @@ function animationHelper(colors){
 
 // -------------------------------------------useMemo + useReducer--------------------------------------
 
-function App(){
+// function App(){
+//   return (
+//     <ClassMemberList list={[
+//       {id:'001', className:'A', name:'Alex'},
+//       {id:'002', className:'C', name:'Allen'},
+//       {id:'003', className:'B', name:'Amy'},
+//       {id:'004', className:'C', name:'Apollo'},
+//       {id:'005', className:'C', name:'Bill'},
+//       {id:'006', className:'C', name:'Belinda'},
+//       {id:'007', className:'A', name:'Cinderella'},
+//       {id:'008', className:'B', name:'Danial'},
+//       {id:'009', className:'A', name:'Emma'},
+//     ]}></ClassMemberList>
+//   )
+// }
+
+// ---------------------------------------------------------useRef----------------------------------------------------
+function Foo(props){
+  const name = useRef('Emma');
+
+  useEffect(() => {
+    name.current = props.name;
+
+    setTimeout(() => {
+      console.log(name.current);
+      console.log(props.name);
+  
+    }, 3000);
+
+  });
+
   return (
-    <ClassMemberList list={[
-      {id:'001', className:'A', name:'Alex'},
-      {id:'002', className:'C', name:'Allen'},
-      {id:'003', className:'B', name:'Amy'},
-      {id:'004', className:'C', name:'Apollo'},
-      {id:'005', className:'C', name:'Bill'},
-      {id:'006', className:'C', name:'Belinda'},
-      {id:'007', className:'A', name:'Cinderella'},
-      {id:'008', className:'B', name:'Danial'},
-      {id:'009', className:'A', name:'Emma'},
-    ]}></ClassMemberList>
+    <p>name of Foo is {props.name}</p>
+  )
+}
+
+function App(){
+  const [nickName, setNickName] = useState('Emma');
+
+  return (
+    <div>
+      <Foo name={nickName}></Foo>
+
+      <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
+        <option value="Alex" key="Alex">Alex</option>
+        <option value="Joyce" key="Joyce">Joyce</option>
+      </select>
+    </div>
   )
 }
 
