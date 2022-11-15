@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 // import Grid from "@mui/material/Grid";
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
-// import ApolloTimeline from './components/ApolloTimeline';
+import ApolloTimeline from './components/ApolloTimeline';
 // import ApolloRefetch from './components/ApolloRefetch';
 // import PassFunction from './components/PassFunction';
 // import SimpleButton from './components/SimpleButton';
@@ -12,6 +12,7 @@ import styled, { css, keyframes } from 'styled-components';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
 import Button from '@mui/material/Button';
+import Page from './components/Page';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1589,69 +1590,94 @@ function animationHelper(colors){
 // }
 
 // ---------------------------------------------------------useCallback & useMemo----------------------------------------------------
-function GeneralChild({callback, type, children}){
-  console.log(`G + ${type[0]}`);
+// function GeneralChild({callback, type, children}){
+//   console.log(`G + ${type[0]}`);
   
-  return (
-      <div className="border-solid border-2 border-blue-400 p-2">
-          <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>G + {type[0]}</h1>
-          {children}
-          <p>callback return value: {callback()}</p>
-      </div>
-  )
-}
+//   return (
+//       <div className="border-solid border-2 border-blue-400 p-2">
+//           <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>G + {type[0]}</h1>
+//           {children}
+//           <p>callback return value: {callback()}</p>
+//       </div>
+//   )
+// }
 
-const MemoizedChild = React.memo(({ callback, type, children }) => {
-  console.log(`M + ${type[0]}`);
+// const MemoizedChild = React.memo(({ callback, type, children }) => {
+//   console.log(`M + ${type[0]}`);
 
-  return (
-    <div className="border-solid border-2 border-yellow-400 p-2">
-      <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>M + {type[0]}</h1>
-      {children}
-      <p>callback return value: {callback()}</p>
-    </div>    
-  )
-});
+//   return (
+//     <div className="border-solid border-2 border-yellow-400 p-2">
+//       <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>M + {type[0]}</h1>
+//       {children}
+//       <p>callback return value: {callback()}</p>
+//     </div>    
+//   )
+// });
 
-// const store = new Set();
+// // const store = new Set();
+
+// function App(){
+//   const [num, setNum] = useState(1);
+
+//   const memoizedCallback = useCallback(() => {
+//     return 33;
+//   }, []);
+
+//   const generalCallback = () => {
+//     return 33;
+//   }
+
+//   // store.add(memoizedCallback);
+//   // store.add(generalCallback);
+//   // console.log(store);
+//   console.log('-----------------');
+
+//   return(
+//     <div>
+//       <div className='flex mb-3'>
+//         <p className='m-2'>num: {num}</p>
+//         <Button variant="contained" onClick={() => setNum(Math.floor(Math.random() * 3) + 1)}>change num</Button>
+//         {/* <button className='ml-2 bg-blue-400 p-2' onClick={() => setFruit(fruitArray[num])}>change fruit</button> */}
+//       </div>
+
+//       <div className='grid grid-cols-2 gap-2'>
+//         {/* num不變，子組件就不重新render */}
+//         <GeneralChild type='memoized callback' callback={memoizedCallback}></GeneralChild>
+
+//         {/* num不變，子組件就不重新render */}
+//         <GeneralChild type='general callback' callback={generalCallback}></GeneralChild>
+
+//         {/* 子組件不重新render */}
+//         <MemoizedChild type='memoized callback' callback={memoizedCallback}></MemoizedChild>
+
+//         {/* num不變，子組件就不重新render */}
+//         <MemoizedChild type='general callback' callback={generalCallback}></MemoizedChild>
+//       </div>
+//     </div>
+//   );
+// }
+
+// -----------------------------------------------composition------------------------------------------------------
 
 function App(){
-  const [num, setNum] = useState(1);
+  const [userData, setUserData] = useState({});
 
-  const memoizedCallback = useCallback(() => {
-    return 33;
-  }, []);
+  useEffect(() => {
+    const getUserData = async() => {
+      await fetch('https://api.github.com/users/tempura327', {
+        method:'GET'
+      }).then(async(d) => setUserData(await d.json()));
+    }
 
-  const generalCallback = () => {
-    return 33;
-  }
+    getUserData();
+  }, [])
 
-  // store.add(memoizedCallback);
-  // store.add(generalCallback);
-  // console.log(store);
-  console.log('-----------------');
-
-  return(
-    <div>
-      <div className='flex mb-3'>
-        <p className='m-2'>num: {num}</p>
-        <Button variant="contained" onClick={() => setNum(Math.floor(Math.random() * 3) + 1)}>change num</Button>
-        {/* <button className='ml-2 bg-blue-400 p-2' onClick={() => setFruit(fruitArray[num])}>change fruit</button> */}
-      </div>
-
-      <div className='grid grid-cols-2 gap-2'>
-        {/* num不變，子組件就不重新render */}
-        <GeneralChild type='memoized callback' callback={memoizedCallback}></GeneralChild>
-
-        {/* num不變，子組件就不重新render */}
-        <GeneralChild type='general callback' callback={generalCallback}></GeneralChild>
-
-        {/* 子組件不重新render */}
-        <MemoizedChild type='memoized callback' callback={memoizedCallback}></MemoizedChild>
-
-        {/* num不變，子組件就不重新render */}
-        <MemoizedChild type='general callback' callback={generalCallback}></MemoizedChild>
-      </div>
+  return (
+    <div className='w-full'>
+      <Page user={userData} avatarStyle='w-14 h-14'>
+        <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+        <ApolloTimeline></ApolloTimeline>
+      </Page>
     </div>
   );
 }
