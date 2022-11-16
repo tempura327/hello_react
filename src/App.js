@@ -4,15 +4,15 @@ import styled, { css, keyframes } from 'styled-components';
 // import Grid from "@mui/material/Grid";
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
-import ApolloTimeline from './components/ApolloTimeline';
+// import ApolloTimeline from './components/ApolloTimeline';
 // import ApolloRefetch from './components/ApolloRefetch';
 // import PassFunction from './components/PassFunction';
 // import SimpleButton from './components/SimpleButton';
 // import Clock from './components/Clock';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
-import Button from '@mui/material/Button';
-import Page from './components/Page';
+// import Button from '@mui/material/Button';
+// import Page from './components/Page';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1659,25 +1659,110 @@ function animationHelper(colors){
 
 // -----------------------------------------------composition------------------------------------------------------
 
+// function App(){
+//   const [userData, setUserData] = useState({});
+
+//   useEffect(() => {
+//     const getUserData = async() => {
+//       await fetch('https://api.github.com/users/tempura327', {
+//         method:'GET'
+//       }).then(async(d) => setUserData(await d.json()));
+//     }
+
+//     getUserData();
+//   }, [])
+
+//   return (
+//     <div className='w-full'>
+//       <Page user={userData} avatarStyle='w-14 h-14'>
+//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+//         <ApolloTimeline></ApolloTimeline>
+//       </Page>
+//     </div>
+//   );
+// }
+
+// --------------------------------createContext & Provider & Consumer--------------------------------------------
+const MyContext = React.createContext({name:'Alex'});
+console.log(MyContext);
+
+class Foo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {  };
+  }
+
+  render() { 
+    return (
+      <div className='w-30 p-4 bg-cyan-500 m-2'>
+        {this.props.children || Object.keys(this.context).map(i => <p key={i}>{`${i}: ${this.context[i]}`}</p>)}
+      </div>
+    );
+  }
+}
+
+Foo.contextType = MyContext;
+
+function Bar(props){
+  console.log(this);
+  return (
+    <div className='w-30 p-4 bg-pink-300 m-2'>
+      {props.children}
+    </div>
+  );
+}
+
+// Function components do not support contextType.
+// Bar.contextType = MyContext;
+
 function App(){
-  const [userData, setUserData] = useState({});
-
-  useEffect(() => {
-    const getUserData = async() => {
-      await fetch('https://api.github.com/users/tempura327', {
-        method:'GET'
-      }).then(async(d) => setUserData(await d.json()));
-    }
-
-    getUserData();
-  }, [])
+  const MyContext = React.createContext();
 
   return (
-    <div className='w-full'>
-      <Page user={userData} avatarStyle='w-14 h-14'>
-        <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
-        <ApolloTimeline></ApolloTimeline>
-      </Page>
+    <div className='flex flex-col'>
+      <h1>直接指定contextType給class component</h1>
+      <Foo></Foo>
+
+      {/* <MyContext.Provider value={MyContext}> */}
+      <MyContext.Provider value={{name:'Tempura', avatar_url:'https://avatars.githubusercontent.com/u/75103292?v=4'}}>
+        <h1>Consumer內直接寫JSX</h1>
+        <MyContext.Consumer>
+          {
+            value => <div className='w-30 p-4 bg-yellow-400 m-2'>
+                        {
+                          Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+                        }
+                      </div>
+          }
+        </MyContext.Consumer>
+        
+        <h1>直接指定contextType給class component</h1>
+        <Foo></Foo>
+
+        <h1>Consumer內函式放class component，再將函式收到的context放到class component</h1>
+        <MyContext.Consumer>
+          {
+            value => <Foo>
+                        <ul>
+                          {
+                            Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+                          }
+                        </ul>
+                      </Foo>
+          }
+          {/* {
+            value => <Foo></Foo>
+          } */}
+        </MyContext.Consumer>
+
+        {/* 讀不到context */}
+        {/* <Bar></Bar> */}
+
+        <h1>Consumer內函式放function component，再將函式收到的context放到function component</h1>
+        <MyContext.Consumer>
+          {value => <Bar>{Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)}</Bar>}
+        </MyContext.Consumer>
+      </MyContext.Provider>
     </div>
   );
 }
