@@ -13,6 +13,9 @@ import styled, { css, keyframes } from 'styled-components';
 // import ClassMemberList from './components/ClassMemberList';
 // import Button from '@mui/material/Button';
 // import Page from './components/Page';
+import Section from './components/Section';
+import Heading from './components/Heading';
+
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1683,86 +1686,131 @@ function animationHelper(colors){
 // }
 
 // --------------------------------createContext & Provider & Consumer--------------------------------------------
-const MyContext = React.createContext({name:'Alex'});
-console.log(MyContext);
+// const MyContext = React.createContext({name:'Alex'});
+// console.log(MyContext);
 
-class Foo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {  };
-  }
+// class Foo extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+//   }
 
-  render() { 
-    return (
-      <div className='w-30 p-4 bg-cyan-500 m-2'>
-        {this.props.children || Object.keys(this.context).map(i => <p key={i}>{`${i}: ${this.context[i]}`}</p>)}
-      </div>
-    );
-  }
-}
+//   render() { 
+//     return (
+//       <div className='w-30 p-4 bg-cyan-500 m-2'>
+//         {this.props.children || Object.keys(this.context).map(i => <p key={i}>{`${i}: ${this.context[i]}`}</p>)}
+//       </div>
+//     );
+//   }
+// }
 
-Foo.contextType = MyContext;
+// Foo.contextType = MyContext;
 
-function Bar(props){
-  console.log(this);
-  return (
-    <div className='w-30 p-4 bg-pink-300 m-2'>
-      {props.children}
-    </div>
-  );
-}
+// function Bar(props){
+//   console.log(this);
+//   return (
+//     <div className='w-30 p-4 bg-pink-300 m-2'>
+//       {props.children}
+//     </div>
+//   );
+// }
 
-// Function components do not support contextType.
-// Bar.contextType = MyContext;
+// // Function components do not support contextType.
+// // Bar.contextType = MyContext;
 
-function App(){
-  const MyContext = React.createContext();
+// function App(){
+//   const MyContext = React.createContext();
 
-  return (
-    <div className='flex flex-col'>
-      <h1>直接指定contextType給class component</h1>
-      <Foo></Foo>
+//   return (
+//     <div className='flex flex-col'>
+//       <h1>直接指定contextType給class component</h1>
+//       <Foo></Foo>
 
-      {/* <MyContext.Provider value={MyContext}> */}
-      <MyContext.Provider value={{name:'Tempura', avatar_url:'https://avatars.githubusercontent.com/u/75103292?v=4'}}>
-        <h1>Consumer內直接寫JSX</h1>
-        <MyContext.Consumer>
-          {
-            value => <div className='w-30 p-4 bg-yellow-400 m-2'>
-                        {
-                          Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
-                        }
-                      </div>
-          }
-        </MyContext.Consumer>
+//       {/* <MyContext.Provider value={MyContext}> */}
+//       <MyContext.Provider value={{name:'Tempura', avatar_url:'https://avatars.githubusercontent.com/u/75103292?v=4'}}>
+//         <h1>Consumer內直接寫JSX</h1>
+//         <MyContext.Consumer>
+//           {
+//             value => <div className='w-30 p-4 bg-yellow-400 m-2'>
+//                         {
+//                           Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+//                         }
+//                       </div>
+//           }
+//         </MyContext.Consumer>
         
-        <h1>直接指定contextType給class component</h1>
-        <Foo></Foo>
+//         <h1>直接指定contextType給class component</h1>
+//         <Foo></Foo>
 
-        <h1>Consumer內函式放class component，再將函式收到的context放到class component</h1>
-        <MyContext.Consumer>
-          {
-            value => <Foo>
-                        <ul>
-                          {
-                            Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
-                          }
-                        </ul>
-                      </Foo>
-          }
-          {/* {
-            value => <Foo></Foo>
-          } */}
-        </MyContext.Consumer>
+//         <h1>Consumer內函式放class component，再將函式收到的context放到class component</h1>
+//         <MyContext.Consumer>
+//           {
+//             value => <Foo>
+//                         <ul>
+//                           {
+//                             Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+//                           }
+//                         </ul>
+//                       </Foo>
+//           }
+//           {/* {
+//             value => <Foo></Foo>
+//           } */}
+//         </MyContext.Consumer>
 
-        {/* 讀不到context */}
-        {/* <Bar></Bar> */}
+//         {/* 讀不到context */}
+//         {/* <Bar></Bar> */}
 
-        <h1>Consumer內函式放function component，再將函式收到的context放到function component</h1>
-        <MyContext.Consumer>
-          {value => <Bar>{Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)}</Bar>}
-        </MyContext.Consumer>
-      </MyContext.Provider>
+//         <h1>Consumer內函式放function component，再將函式收到的context放到function component</h1>
+//         <MyContext.Consumer>
+//           {value => <Bar>{Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)}</Bar>}
+//         </MyContext.Consumer>
+//       </MyContext.Provider>
+//     </div>
+//   );
+// }
+
+// --------------------------------useContext--------------------------------------------
+// if you don't use useContext, you need to pass level to every Heading components.
+// function App(){
+//   return (
+//     <div>
+//       <Section>
+//         <Heading level={1}>Passing Data Deeply with Context</Heading>
+//         <Heading level={1}>Passing Data Deeply with Context</Heading>
+
+//         <Section>
+//           <Heading level={2}>Passing Data Deeply with Context</Heading>
+//           <Heading level={2}>Passing Data Deeply with Context</Heading>
+          
+//           <Section>
+//             <Heading level={3}>Passing Data Deeply with Context</Heading>
+//             <Heading level={3}>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+// if you use useContext, you just pass level to Section component, then Heading components below it can get level.
+function App(){
+  return (
+    <div>
+      <Section level={1}>
+        <Heading>Passing Data Deeply with Context</Heading>
+        <Heading>Passing Data Deeply with Context</Heading>
+
+        <Section level={2}>
+          <Heading>Passing Data Deeply with Context</Heading>
+          <Heading>Passing Data Deeply with Context</Heading>
+          
+          <Section level={3}>
+            <Heading>Passing Data Deeply with Context</Heading>
+            <Heading>Passing Data Deeply with Context</Heading>
+          </Section>
+        </Section>
+      </Section>
     </div>
   );
 }
