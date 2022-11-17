@@ -15,9 +15,9 @@ import Switch from '@mui/material/Switch';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
 // import Page from './components/Page';
-import Section from './components/Section';
-import Heading from './components/Heading';
-// import {ThemeContext, themeMap} from './contexts/ThemeContext';
+// import Section from './components/Section';
+// import Heading from './components/Heading';
+import {ThemeContext, themeMap} from './contexts/ThemeContext';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1821,25 +1821,124 @@ function animationHelper(colors){
 // you should use useContext() in Section to get the current value of context,
 // the plus 1 to current value and pass it to context object.
 
-function App(){
-  return (
-    <div>
-      <Section>
-        <Heading>Passing Data Deeply with Context</Heading>
-        <Heading>Passing Data Deeply with Context</Heading>
+// function App(){
+//   return (
+//     <div>
+//       <Section>
+//         <Heading>Passing Data Deeply with Context</Heading>
+//         <Heading>Passing Data Deeply with Context</Heading>
 
-        <Section>
-          <Heading>Passing Data Deeply with Context</Heading>
-          <Heading>Passing Data Deeply with Context</Heading>
+//         <Section>
+//           <Heading>Passing Data Deeply with Context</Heading>
+//           <Heading>Passing Data Deeply with Context</Heading>
           
-          <Section>
-            <Heading>Passing Data Deeply with Context</Heading>
-            <Heading>Passing Data Deeply with Context</Heading>
-          </Section>
-        </Section>
-      </Section>
-    </div>
-  );
+//           <Section>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+
+// // --------------------------------useContext--------------------------------------------
+function Button({onClick, children}){
+  const themeContext = useContext(ThemeContext);
+  const color = themeMap[themeContext.mode].button;
+
+  return (
+    <button className={`rounded p-2 ${color}`} onClick={onClick || null}>{children}</button>
+  )
+}
+
+function NavigationBar({color, children}){
+  return (
+    <nav className={`flex p-4 px-12 w-full ${color}`}>
+      {children}
+    </nav>
+  )
+}
+
+function Footer({color, children}){
+  return (
+    <footer className={`flex justify-between items-center p-4 px-12 w-full ${color}`}>
+      {children}
+    </footer>
+  )
+}
+
+function Link({href = '#', color, children}){
+  return (
+    <a href={href} className={`${color} w-fit border-2 border-solid border-transparent`}>
+      {children}
+    </a>
+  )
+}
+
+function PageLayout(props){
+  const themeContext = useContext(ThemeContext);
+  const {nav, footer, link} = themeMap[themeContext.mode];
+
+  return (
+    <>
+      <NavigationBar color={nav}>
+        <Switch onChange={(e) => {props.onThemeChange(e.target.checked? 'dark' : 'light')}} defaultChecked></Switch>
+        <ul className='flex ml-auto'>
+          {props.navMenu.map(i => <li className='ml-4' key={i} color={link}>
+                              <Link color={link}>{i}</Link>    
+                            </li>)}
+        </ul>
+      </NavigationBar>
+
+      {props.children}
+      
+      <Footer color={footer}>
+        {
+          props.footerChildren || <>
+                                    <p>2022 Tempura327</p>
+
+                                    <div className='flex'>
+                                      {
+                                        props.footerMenu.map(i => <div key={i.title} className='flex flex-col ml-6'>
+                                                              <span className='font-bold mb-2'>{i.title}</span>
+                                                              {i.content.map(item => <Link key={`${i.title}-${item}`} color={link}>{item}</Link>)}
+                                                            </div>)
+                                      }       
+                                    </div>
+                                  </>
+        }
+      </Footer>
+    </>
+  )
+}
+
+function App(){
+  const [theme, setTheme] = useState({mode:'dark'});
+  const {body, text} = themeMap[theme.mode];
+
+  const navMenu = ['Home', 'About', 'Note'];
+
+  const footerMenu = [
+    {title:'Note', content:['Javascript', 'React', 'Vue']}, 
+    {title:'Other', content:['Github', 'Side Project']}
+  ];
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <div className='flex flex-col w-full'>
+        <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme({mode})}}>
+          <main className={`flex flex-col items-center p-8 ${body}`}>
+              <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
+              <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
+              <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
+              <Button>Read More</Button>
+          </main>
+        </PageLayout>
+      </div>
+    </ThemeContext.Provider>
+  )
 }
 
 export default App;
