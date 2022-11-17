@@ -1,7 +1,10 @@
-import React, {Component, createRef, useEffect, useState, useRef, useReducer, useCallback} from 'react';
+import React, {Component, createRef, useEffect, useState, useRef, useReducer, useCallback, useContext} from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
+// import Button from '@mui/material/Button';
+import Switch from '@mui/material/Switch';
+
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
 // import ApolloTimeline from './components/ApolloTimeline';
@@ -11,11 +14,10 @@ import styled, { css, keyframes } from 'styled-components';
 // import Clock from './components/Clock';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
-// import Button from '@mui/material/Button';
 // import Page from './components/Page';
 import Section from './components/Section';
 import Heading from './components/Heading';
-
+// import {ThemeContext, themeMap} from './contexts/ThemeContext';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1794,18 +1796,43 @@ function animationHelper(colors){
 // }
 
 // if you use useContext, you just pass level to Section component, then Heading components below it can get level.
+// function App(){
+//   return (
+//     <div>
+//       <Section level={1}>
+//         <Heading>Passing Data Deeply with Context</Heading>
+//         <Heading>Passing Data Deeply with Context</Heading>
+
+//         <Section level={2}>
+//           <Heading>Passing Data Deeply with Context</Heading>
+//           <Heading>Passing Data Deeply with Context</Heading>
+          
+//           <Section level={3}>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+// if you don't want pass level to Section again and again, you just want the size of text become smaller,
+// you should use useContext() in Section to get the current value of context,
+// the plus 1 to current value and pass it to context object.
+
 function App(){
   return (
     <div>
-      <Section level={1}>
+      <Section>
         <Heading>Passing Data Deeply with Context</Heading>
         <Heading>Passing Data Deeply with Context</Heading>
 
-        <Section level={2}>
+        <Section>
           <Heading>Passing Data Deeply with Context</Heading>
           <Heading>Passing Data Deeply with Context</Heading>
           
-          <Section level={3}>
+          <Section>
             <Heading>Passing Data Deeply with Context</Heading>
             <Heading>Passing Data Deeply with Context</Heading>
           </Section>

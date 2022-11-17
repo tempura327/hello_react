@@ -1,3 +1,3 @@
 import React from 'react';
 
-export const LevelContext = React.createContext(100);
+export const LevelContext = React.createContext(1);
