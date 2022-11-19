@@ -1845,17 +1845,16 @@ function animationHelper(colors){
 
 // // --------------------------------useContext--------------------------------------------
 function Button({onClick, children}){
-  const themeContext = useContext(ThemeContext);
-  const color = themeMap[themeContext.mode].button;
+  const {button} = useContext(ThemeContext);
 
   return (
-    <button className={`rounded p-2 ${color}`} onClick={onClick || null}>{children}</button>
+    <button className={`rounded p-2 ${button}`} onClick={onClick || null}>{children}</button>
   )
 }
 
-function NavigationBar({color, children}){
+function NavigationBar({color, children, className = ''}){
   return (
-    <nav className={`flex p-4 px-12 w-full ${color}`}>
+    <nav className={`flex p-4 px-12 w-full ${color} ${className}`}>
       {children}
     </nav>
   )
@@ -1878,9 +1877,8 @@ function Link({href = '#', color, children}){
 }
 
 function PageLayout(props){
-  const themeContext = useContext(ThemeContext);
-  const {nav, footer, link} = themeMap[themeContext.mode];
-
+  const {nav, footer, link} = useContext(ThemeContext);
+  
   return (
     <>
       <NavigationBar color={nav}>
@@ -1897,7 +1895,7 @@ function PageLayout(props){
       <Footer color={footer}>
         {
           props.footerChildren || <>
-                                    <p>2022 Tempura327</p>
+                                    <p>designed by Tempura327(2022)</p>
 
                                     <div className='flex'>
                                       {
@@ -1915,8 +1913,8 @@ function PageLayout(props){
 }
 
 function App(){
-  const [theme, setTheme] = useState({mode:'dark'});
-  const {body, text} = themeMap[theme.mode];
+  const [theme, setTheme] = useState('dark'); // 將模式設為App的local state 
+  const {text, body} = themeMap[theme];
 
   const navMenu = ['Home', 'About', 'Note'];
 
@@ -1926,19 +1924,20 @@ function App(){
   ];
 
   return (
-    <ThemeContext.Provider value={theme}>
-      <div className='flex flex-col w-full'>
-        <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme({mode})}}>
-          <main className={`flex flex-col items-center p-8 ${body}`}>
-              <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
-              <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
-              <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
-              <Button>Read More</Button>
-          </main>
-        </PageLayout>
-      </div>
+    <ThemeContext.Provider value={themeMap[theme]}>
+      <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme(mode)}}>
+        <main className={`flex flex-col items-center p-8 ${body}`}>
+            <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
+            <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
+            <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
+            <Button>Read More</Button>
+        </main>
+      </PageLayout>
     </ThemeContext.Provider>
   )
 }
+
+// ----------------------------------------------------------------------------
+
 
 export default App;

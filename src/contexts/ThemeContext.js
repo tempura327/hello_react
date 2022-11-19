@@ -1,7 +1,5 @@
 import React from 'react';
 
-export const ThemeContext = React.createContext({mode:'dark'});
-
 export const themeMap = {
     dark:{
         body:'bg-gray-700',
@@ -20,3 +18,5 @@ export const themeMap = {
         text:'text-zinc-900'
     }
 };
+
+export const ThemeContext = React.createContext(themeMap.dark);
