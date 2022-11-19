@@ -11,6 +11,7 @@
   - [useContext](#usecontext)
     - [例子](#例子)
   - [useContext + useReducer](#usecontext--usereducer)
+    - [例子](#例子-1)
   - [參考資料](#參考資料)
 
 ## context & props drilling
@@ -398,11 +399,16 @@ function App(){
 
 ## useContext + useReducer
 
-useContext與useReducer的結合可以達到`類似Redux`的效果
+useContext與useReducer的結合可以達到`類似Redux`的效果，但仍有2個主要的差異
+
+1. useContext + useReducer的話只要context更新就會重新渲染，Redux則否
+2. 只有Redux能處理middleware
 
 之所以需要結合它們是因為`當使用useReducer時`，`state與dispatch`都`只能在該組件`被取`用`
 
 因此在`組件包了很多層時`，就需要把state和dispatch`丟到context`，然後用useContext取用它們
+
+### 例子
 
 用起來會像這樣
 
@@ -461,5 +467,5 @@ function Foo({num}){
 [【Day.22】React效能 - 如何處理useContext的效能問題](https://ithelp.ithome.com.tw/articles/10249827)  
 [[Day 22]React hook(中)-useContext&useReducer](https://ithelp.ithome.com.tw/articles/10241780)  
 
-[React docs beta - Scaling Up with Reducer and Context](https://beta.reactjs.org/learn/scaling-up-with-reducer-and-context)  
+[React Docs Beta - Scaling Up with Reducer and Context](https://beta.reactjs.org/learn/scaling-up-with-reducer-and-context)  
 [useReducer 真的能完全取代 Redux 嗎?](https://medium.com/hannah-lin/react-hook-%E7%AD%86%E8%A8%98-usereducer-%E7%9C%9F%E7%9A%84%E8%83%BD%E5%AE%8C%E5%85%A8%E5%8F%96%E4%BB%A3-redux-%E5%97%8E-fabcc1e9b400)  
