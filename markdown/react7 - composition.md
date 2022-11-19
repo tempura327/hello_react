@@ -4,11 +4,12 @@
   - [composition 與 繼承](#composition-與-繼承)
   - [children](#children)
   - [特別化](#特別化)
+  - [組件當作props](#組件當作props)
   - [參考資料](#參考資料)
   
 ## composition 與 繼承
 
-composition(組合)是指，class A使用了class B新建出來的實例
+composition(組合)是指，將組件或JSX當作props傳給另一個組件，進而造出新的組件
 
 inheritance(繼承)是指，class A是由class B衍生出來的，A可以使用B所有的功能、欄位，故可以A說是B的子class
 
@@ -247,6 +248,123 @@ class App extends Component {
 }
 
 export default App;
+```
+
+## 組件當作props
+
+(11/9更新)
+
+假設要做個網站，每個頁面都會出現nav、footer，nav內的右側有一個使用者頭像，點擊會連到使用者頁面
+
+結構如下
+
+App
+└── Page
+    └── PageLayout
+            ├── NavigationBar
+            │        └──Link
+            │            └──Avatar
+            │
+            ├── 內容(children prop)
+            └── footer
+
+不使用composition的話，資料會從App → Page → PageLayout → NavigationBar → Link → Avatar
+
+如果使用的話資料會從App → Page，Page直接組裝Link + Avatar，然後⇒PageLayout⇒NavigationBar
+
+完整步驟如下
+
+App先抓資料，然後傳給Page(App → Page)
+
+```js
+// App.js
+import Page from './components/Page';
+
+function App(){
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const getUserData = async() => {
+      await fetch('https://api.github.com/users/tempura327', {
+        method:'GET'
+      }).then(async(d) => setUserData(await d.json()));
+    }
+
+    getUserData();
+  }, [])
+
+  return (
+    <div className='w-full'>
+      {/* 把使用者資料傳給Page */}
+      <Page user={userData} avatarStyle='w-14 h-14'>
+        {/* 頁面內容 */}
+        <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+        <ApolloTimeline></ApolloTimeline>
+      </Page>
+    </div>
+  );
+}
+```
+
+Page收到資料後，`抽出需要的部分寫成JSX`賦值給變數(Page直接組裝Link)
+
+再將它`傳給PageLayout`(⇒PageLayout)
+
+```js
+// Page.js
+
+import Link from './Link';
+import Avatar from './Avatar';
+import PageLayout from './PageLayout';
+
+function Page(props) {
+  const user = props.user;
+
+  const userLink = (
+    <Link href={user.html_url} className='ml-auto'>
+      <Avatar imgUrl={user.avatar_url} className={`${props.avatarStyle}`} />
+    </Link>
+  );
+  
+  return (
+    <PageLayout userLink={userLink}>
+      {/* 從App傳入的頁面內容 */}
+      {props.children}
+    </PageLayout>
+  );
+}
+```
+
+PageLayout收到JSX後，傳給NavigationBar(⇒NavigationBar)
+
+```js
+// PageLayout.js
+
+function PageLayout({userLink, children}){
+  return (
+    <>
+      {/* 從Page傳入的userLink(Link內包了Avatar) */}
+      <NavigationBar userLink={userLink}></NavigationBar>
+      {/* 從Page傳入的頁面內容 */}
+      {children}
+      <footer className='bg-zinc-600 p-2 px-12 text-center text-white'>Copyright © 2022 Tempura327</footer>
+    </>
+  );
+}
+```
+
+NavigationBar收到JSX，擺到需要該JSX的位置
+
+```js
+// NavigationBar.js
+
+function NavigationBar({userLink}){
+  return (
+    <div className='bg-zinc-600 p-2 px-12 flex'>
+      {userLink}
+    </div>
+  );
+}
 ```
 
 ## 參考資料
