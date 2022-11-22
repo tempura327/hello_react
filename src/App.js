@@ -3,21 +3,22 @@ import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
 // import Button from '@mui/material/Button';
-import Switch from '@mui/material/Switch';
+// import Switch from '@mui/material/Switch';
 
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
 // import ApolloTimeline from './components/ApolloTimeline';
 // import ApolloRefetch from './components/ApolloRefetch';
 // import PassFunction from './components/PassFunction';
-import SimpleButton from './components/SimpleButton';
+// import SimpleButton from './components/SimpleButton';
 // import Clock from './components/Clock';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
 // import Page from './components/Page';
 // import Section from './components/Section';
 // import Heading from './components/Heading';
-import {ThemeContext, themeMap} from './contexts/ThemeContext';
+// import {ThemeContext, themeMap} from './contexts/ThemeContext';
+import RefParent from './components/RefParent';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1844,84 +1845,84 @@ function animationHelper(colors){
 
 
 // // --------------------------------useContext--------------------------------------------
-function Button({onClick, children}){
-  const {button} = useContext(ThemeContext);
+// function Button({onClick, children}){
+//   const {button} = useContext(ThemeContext);
 
-  return (
-    <button className={`rounded p-2 ${button}`} onClick={onClick || null}>{children}</button>
-  )
-}
+//   return (
+//     <button className={`rounded p-2 ${button}`} onClick={onClick || null}>{children}</button>
+//   )
+// }
 
-function NavigationBar({color, children, className = ''}){
-  return (
-    <nav className={`flex p-4 px-12 w-full ${color} ${className}`}>
-      {children}
-    </nav>
-  )
-}
+// function NavigationBar({color, children, className = ''}){
+//   return (
+//     <nav className={`flex p-4 px-12 w-full ${color} ${className}`}>
+//       {children}
+//     </nav>
+//   )
+// }
 
-function Footer({color, children}){
-  return (
-    <footer className={`flex justify-between items-center p-4 px-12 w-full ${color}`}>
-      {children}
-    </footer>
-  )
-}
+// function Footer({color, children}){
+//   return (
+//     <footer className={`flex justify-between items-center p-4 px-12 w-full ${color}`}>
+//       {children}
+//     </footer>
+//   )
+// }
 
-function Link({href = '#', color, children}){
-  return (
-    <a href={href} className={`${color} w-fit border-2 border-solid border-transparent`}>
-      {children}
-    </a>
-  )
-}
+// function Link({href = '#', color, children}){
+//   return (
+//     <a href={href} className={`${color} w-fit border-2 border-solid border-transparent`}>
+//       {children}
+//     </a>
+//   )
+// }
 
-function PageLayout(props){
-  const {nav, footer, link} = useContext(ThemeContext);
+// function PageLayout(props){
+//   const {nav, footer, link} = useContext(ThemeContext);
   
-  return (
-    <>
-      <NavigationBar color={nav}>
-        <Switch onChange={(e) => {props.onThemeChange(e.target.checked? 'dark' : 'light')}} defaultChecked></Switch>
-        <ul className='flex ml-auto'>
-          {props.navMenu.map(i => <li className='ml-4' key={i} color={link}>
-                              <Link color={link}>{i}</Link>    
-                            </li>)}
-        </ul>
-      </NavigationBar>
+//   return (
+//     <>
+//       <NavigationBar color={nav}>
+//         <Switch onChange={(e) => {props.onThemeChange(e.target.checked? 'dark' : 'light')}} defaultChecked></Switch>
+//         <ul className='flex ml-auto'>
+//           {props.navMenu.map(i => <li className='ml-4' key={i} color={link}>
+//                               <Link color={link}>{i}</Link>    
+//                             </li>)}
+//         </ul>
+//       </NavigationBar>
 
-      {props.children}
+//       {props.children}
       
-      <Footer color={footer}>
-        {
-          props.footerChildren || <>
-                                    <p>designed by Tempura327(2022)</p>
+//       <Footer color={footer}>
+//         {
+//           props.footerChildren || <>
+//                                     <p>designed by Tempura327(2022)</p>
 
-                                    <div className='flex'>
-                                      {
-                                        props.footerMenu.map(i => <div key={i.title} className='flex flex-col ml-6'>
-                                                              <span className='font-bold mb-2'>{i.title}</span>
-                                                              {i.content.map(item => <Link key={`${i.title}-${item}`} color={link}>{item}</Link>)}
-                                                            </div>)
-                                      }       
-                                    </div>
-                                  </>
-        }
-      </Footer>
-    </>
-  )
-}
+//                                     <div className='flex'>
+//                                       {
+//                                         props.footerMenu.map(i => <div key={i.title} className='flex flex-col ml-6'>
+//                                                               <span className='font-bold mb-2'>{i.title}</span>
+//                                                               {i.content.map(item => <Link key={`${i.title}-${item}`} color={link}>{item}</Link>)}
+//                                                             </div>)
+//                                       }       
+//                                     </div>
+//                                   </>
+//         }
+//       </Footer>
+//     </>
+//   )
+// }
 
-function App(){
-  const [theme, setTheme] = useState('dark'); // 將模式設為App的local state 
-  const {text, body} = themeMap[theme];
+// function App(){
+//   const [theme, setTheme] = useState('dark'); // 將模式設為App的local state 
+//   const {text, body} = themeMap[theme];
 
-  const navMenu = ['Home', 'About', 'Note'];
+//   const navMenu = ['Home', 'About', 'Note'];
 
-  const footerMenu = [
-    {title:'Note', content:['Javascript', 'React', 'Vue']}, 
-    {title:'Other', content:['Github', 'Side Project']}
-  ];
+//   const footerMenu = [
+//     {title:'Note', content:['Javascript', 'React', 'Vue']}, 
+//     {title:'Other', content:['Github', 'Side Project']}
+//   ];
 
 //   return (
 //     <div className='w-full'>
@@ -1931,6 +1932,21 @@ function App(){
 //       </Page>
 //     </div>
 //   );
+// }
+
+// function App(){
+//   return (
+//     <ThemeContext.Provider value={themeMap[theme]}>
+//       <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme(mode)}}>
+//         <main className={`flex flex-col items-center p-8 ${body}`}>
+//             <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
+//             <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
+//             <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
+//             <Button>Read More</Button>
+//         </main>
+//       </PageLayout>
+//     </ThemeContext.Provider>
+//   )
 // }
 
 // -----------------------------------------------forwardRef------------------------------------------------------
@@ -1949,17 +1965,10 @@ function App(){
 
 function App(){
   return (
-    <ThemeContext.Provider value={themeMap[theme]}>
-      <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme(mode)}}>
-        <main className={`flex flex-col items-center p-8 ${body}`}>
-            <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
-            <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
-            <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
-            <Button>Read More</Button>
-        </main>
-      </PageLayout>
-    </ThemeContext.Provider>
-  )
+    <div>
+      <RefParent></RefParent>
+    </div>
+  );
 }
 
 // ----------------------------------------------------------------------------
