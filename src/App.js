@@ -1,7 +1,10 @@
-import React, {Component, createRef, useEffect, useState, useRef, useReducer, useCallback} from 'react';
+import React, {Component, createRef, useEffect, useState, useRef, useReducer, useCallback, useContext} from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 // import Grid from "@mui/material/Grid";
+// import Button from '@mui/material/Button';
+import Switch from '@mui/material/Switch';
+
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
 // import ApolloTimeline from './components/ApolloTimeline';
@@ -11,10 +14,10 @@ import SimpleButton from './components/SimpleButton';
 // import Clock from './components/Clock';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
-// import Button from '@mui/material/Button';
 // import Page from './components/Page';
-import RefParent from './components/RefParent';
-import SimpleInput from './components/SimpleInput';
+// import Section from './components/Section';
+// import Heading from './components/Heading';
+import {ThemeContext, themeMap} from './contexts/ThemeContext';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1684,6 +1687,252 @@ function animationHelper(colors){
 //   );
 // }
 
+// --------------------------------createContext & Provider & Consumer--------------------------------------------
+// const MyContext = React.createContext({name:'Alex'});
+// console.log(MyContext);
+
+// class Foo extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+//   }
+
+//   render() { 
+//     return (
+//       <div className='w-30 p-4 bg-cyan-500 m-2'>
+//         {this.props.children || Object.keys(this.context).map(i => <p key={i}>{`${i}: ${this.context[i]}`}</p>)}
+//       </div>
+//     );
+//   }
+// }
+
+// Foo.contextType = MyContext;
+
+// function Bar(props){
+//   console.log(this);
+//   return (
+//     <div className='w-30 p-4 bg-pink-300 m-2'>
+//       {props.children}
+//     </div>
+//   );
+// }
+
+// // Function components do not support contextType.
+// // Bar.contextType = MyContext;
+
+// function App(){
+//   const MyContext = React.createContext();
+
+//   return (
+//     <div className='flex flex-col'>
+//       <h1>直接指定contextType給class component</h1>
+//       <Foo></Foo>
+
+//       {/* <MyContext.Provider value={MyContext}> */}
+//       <MyContext.Provider value={{name:'Tempura', avatar_url:'https://avatars.githubusercontent.com/u/75103292?v=4'}}>
+//         <h1>Consumer內直接寫JSX</h1>
+//         <MyContext.Consumer>
+//           {
+//             value => <div className='w-30 p-4 bg-yellow-400 m-2'>
+//                         {
+//                           Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+//                         }
+//                       </div>
+//           }
+//         </MyContext.Consumer>
+        
+//         <h1>直接指定contextType給class component</h1>
+//         <Foo></Foo>
+
+//         <h1>Consumer內函式放class component，再將函式收到的context放到class component</h1>
+//         <MyContext.Consumer>
+//           {
+//             value => <Foo>
+//                         <ul>
+//                           {
+//                             Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+//                           }
+//                         </ul>
+//                       </Foo>
+//           }
+//           {/* {
+//             value => <Foo></Foo>
+//           } */}
+//         </MyContext.Consumer>
+
+//         {/* 讀不到context */}
+//         {/* <Bar></Bar> */}
+
+//         <h1>Consumer內函式放function component，再將函式收到的context放到function component</h1>
+//         <MyContext.Consumer>
+//           {value => <Bar>{Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)}</Bar>}
+//         </MyContext.Consumer>
+//       </MyContext.Provider>
+//     </div>
+//   );
+// }
+
+// --------------------------------useContext--------------------------------------------
+// if you don't use useContext, you need to pass level to every Heading components.
+// function App(){
+//   return (
+//     <div>
+//       <Section>
+//         <Heading level={1}>Passing Data Deeply with Context</Heading>
+//         <Heading level={1}>Passing Data Deeply with Context</Heading>
+
+//         <Section>
+//           <Heading level={2}>Passing Data Deeply with Context</Heading>
+//           <Heading level={2}>Passing Data Deeply with Context</Heading>
+          
+//           <Section>
+//             <Heading level={3}>Passing Data Deeply with Context</Heading>
+//             <Heading level={3}>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+// if you use useContext, you just pass level to Section component, then Heading components below it can get level.
+// function App(){
+//   return (
+//     <div>
+//       <Section level={1}>
+//         <Heading>Passing Data Deeply with Context</Heading>
+//         <Heading>Passing Data Deeply with Context</Heading>
+
+//         <Section level={2}>
+//           <Heading>Passing Data Deeply with Context</Heading>
+//           <Heading>Passing Data Deeply with Context</Heading>
+          
+//           <Section level={3}>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+// if you don't want pass level to Section again and again, you just want the size of text become smaller,
+// you should use useContext() in Section to get the current value of context,
+// the plus 1 to current value and pass it to context object.
+
+// function App(){
+//   return (
+//     <div>
+//       <Section>
+//         <Heading>Passing Data Deeply with Context</Heading>
+//         <Heading>Passing Data Deeply with Context</Heading>
+
+//         <Section>
+//           <Heading>Passing Data Deeply with Context</Heading>
+//           <Heading>Passing Data Deeply with Context</Heading>
+          
+//           <Section>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+
+// // --------------------------------useContext--------------------------------------------
+function Button({onClick, children}){
+  const {button} = useContext(ThemeContext);
+
+  return (
+    <button className={`rounded p-2 ${button}`} onClick={onClick || null}>{children}</button>
+  )
+}
+
+function NavigationBar({color, children, className = ''}){
+  return (
+    <nav className={`flex p-4 px-12 w-full ${color} ${className}`}>
+      {children}
+    </nav>
+  )
+}
+
+function Footer({color, children}){
+  return (
+    <footer className={`flex justify-between items-center p-4 px-12 w-full ${color}`}>
+      {children}
+    </footer>
+  )
+}
+
+function Link({href = '#', color, children}){
+  return (
+    <a href={href} className={`${color} w-fit border-2 border-solid border-transparent`}>
+      {children}
+    </a>
+  )
+}
+
+function PageLayout(props){
+  const {nav, footer, link} = useContext(ThemeContext);
+  
+  return (
+    <>
+      <NavigationBar color={nav}>
+        <Switch onChange={(e) => {props.onThemeChange(e.target.checked? 'dark' : 'light')}} defaultChecked></Switch>
+        <ul className='flex ml-auto'>
+          {props.navMenu.map(i => <li className='ml-4' key={i} color={link}>
+                              <Link color={link}>{i}</Link>    
+                            </li>)}
+        </ul>
+      </NavigationBar>
+
+      {props.children}
+      
+      <Footer color={footer}>
+        {
+          props.footerChildren || <>
+                                    <p>designed by Tempura327(2022)</p>
+
+                                    <div className='flex'>
+                                      {
+                                        props.footerMenu.map(i => <div key={i.title} className='flex flex-col ml-6'>
+                                                              <span className='font-bold mb-2'>{i.title}</span>
+                                                              {i.content.map(item => <Link key={`${i.title}-${item}`} color={link}>{item}</Link>)}
+                                                            </div>)
+                                      }       
+                                    </div>
+                                  </>
+        }
+      </Footer>
+    </>
+  )
+}
+
+function App(){
+  const [theme, setTheme] = useState('dark'); // 將模式設為App的local state 
+  const {text, body} = themeMap[theme];
+
+  const navMenu = ['Home', 'About', 'Note'];
+
+  const footerMenu = [
+    {title:'Note', content:['Javascript', 'React', 'Vue']}, 
+    {title:'Other', content:['Github', 'Side Project']}
+  ];
+
+//   return (
+//     <div className='w-full'>
+//       <Page user={userData} avatarStyle='w-14 h-14'>
+//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+//         <ApolloTimeline></ApolloTimeline>
+//       </Page>
+//     </div>
+//   );
+// }
+
 // -----------------------------------------------forwardRef------------------------------------------------------
 // forwardRef可以`暴露子組建的DOM Node給父組件`
 // 不過這會讓`組件的內部`變得更`難修改`
@@ -1700,10 +1949,20 @@ function animationHelper(colors){
 
 function App(){
   return (
-    <div>
-      <RefParent></RefParent>
-    </div>
-  );
+    <ThemeContext.Provider value={themeMap[theme]}>
+      <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme(mode)}}>
+        <main className={`flex flex-col items-center p-8 ${body}`}>
+            <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
+            <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
+            <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
+            <Button>Read More</Button>
+        </main>
+      </PageLayout>
+    </ThemeContext.Provider>
+  )
 }
+
+// ----------------------------------------------------------------------------
+
 
 export default App;
