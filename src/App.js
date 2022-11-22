@@ -4,15 +4,17 @@ import styled, { css, keyframes } from 'styled-components';
 // import Grid from "@mui/material/Grid";
 // import ToDoList_MUI from './components/TodoList_MUI';
 // import Apollo from './components/Apollo';
-import ApolloTimeline from './components/ApolloTimeline';
+// import ApolloTimeline from './components/ApolloTimeline';
 // import ApolloRefetch from './components/ApolloRefetch';
 // import PassFunction from './components/PassFunction';
-// import SimpleButton from './components/SimpleButton';
+import SimpleButton from './components/SimpleButton';
 // import Clock from './components/Clock';
 // import Calculator from './components/Calculator';
 // import ClassMemberList from './components/ClassMemberList';
-import Button from '@mui/material/Button';
-import Page from './components/Page';
+// import Button from '@mui/material/Button';
+// import Page from './components/Page';
+import RefParent from './components/RefParent';
+import SimpleInput from './components/SimpleInput';
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1659,25 +1661,43 @@ function animationHelper(colors){
 
 // -----------------------------------------------composition------------------------------------------------------
 
+// function App(){
+//   const [userData, setUserData] = useState({});
+
+//   useEffect(() => {
+//     const getUserData = async() => {
+//       await fetch('https://api.github.com/users/tempura327', {
+//         method:'GET'
+//       }).then(async(d) => setUserData(await d.json()));
+//     }
+
+//     getUserData();
+//   }, [])
+
+//   return (
+//     <div className='w-full'>
+//       <Page user={userData} avatarStyle='w-14 h-14'>
+//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+//         <ApolloTimeline></ApolloTimeline>
+//       </Page>
+//     </div>
+//   );
+// }
+
+// -----------------------------------------------forwardRef------------------------------------------------------
+
 function App(){
-  const [userData, setUserData] = useState({});
+  const checkRef = useRef(null);
 
   useEffect(() => {
-    const getUserData = async() => {
-      await fetch('https://api.github.com/users/tempura327', {
-        method:'GET'
-      }).then(async(d) => setUserData(await d.json()));
-    }
+    console.log(checkRef.current);
 
-    getUserData();
   }, [])
 
   return (
-    <div className='w-full'>
-      <Page user={userData} avatarStyle='w-14 h-14'>
-        <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
-        <ApolloTimeline></ApolloTimeline>
-      </Page>
+    <div>
+      <RefParent ref={checkRef}></RefParent>
+      <SimpleButton onClick={() => {checkRef.current.click()}}>check</SimpleButton>
     </div>
   );
 }
