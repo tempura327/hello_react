@@ -8,12 +8,12 @@ const RefParent = forwardRef((props, ref) => {
     //     console.log(inputRef);
     // }, []);
 
+    
+
     return (
         <div className='p-4'>
             <SimpleInput ref={inputRef} />
-            <input type="checkbox" ref={ref} id="bike" name="bike" value="Bike"></input>
-            <label htmlFor="bike">Bike</label>
-            <br></br>
+
             <button onClick={() => inputRef.current.focus()}>focus</button>
         </div>
     );

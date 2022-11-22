@@ -1685,19 +1685,23 @@ function animationHelper(colors){
 // }
 
 // -----------------------------------------------forwardRef------------------------------------------------------
+// forwardRef可以`暴露子組建的DOM Node給父組件`
+// 不過這會讓`組件的內部`變得更`難修改`
+// 所以`通常用於暴露複`用性高的`低階層的組件`(ex:按鈕、input)，千萬`別`用它`傳遞高階層組件`(ex: 頭像、評論)
+
+// 步驟大致為3
+// 1. 在父組件建立ref物件，並把ref物件用ref prop傳給子組件
+// 2. 用forwardRef把回傳子組件的函式包住
+// 3. 此時父祖件可以透過ref.current取得子組件的DOM Node了
+
+// [React Docs Bata - forwardRef](https://beta.reactjs.org/apis/react/forwardRef)
+// [React - forwardRef](https://reactjs.org/docs/forwarding-refs.html)
+// [ForwardRef 的使用](https://pjchender.blogspot.com/2021/03/react-dom-forwardref.html)
 
 function App(){
-  const checkRef = useRef(null);
-
-  useEffect(() => {
-    console.log(checkRef.current);
-
-  }, [])
-
   return (
     <div>
-      <RefParent ref={checkRef}></RefParent>
-      <SimpleButton onClick={() => {checkRef.current.click()}}>check</SimpleButton>
+      <RefParent></RefParent>
     </div>
   );
 }
