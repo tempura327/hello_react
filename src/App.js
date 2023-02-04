@@ -1,5 +1,7 @@
 import React, {Component, createRef, useEffect, useState, useRef, useReducer, useCallback, useContext} from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import Router from './router';
+
 
 // import Grid from "@mui/material/Grid";
 // import Button from '@mui/material/Button';
@@ -18,7 +20,684 @@ import styled, { css, keyframes } from 'styled-components';
 // import Section from './components/Section';
 // import Heading from './components/Heading';
 // import {ThemeContext, themeMap} from './contexts/ThemeContext';
-import RefParent from './components/RefParent';
+import RefParent from './components/RefParent'; 
+
+// const brown = animationHelper(['#A7A284', '#8a8462', '#716834', '#5a5019', '#433E0E']);
+// const red = animationHelper(['#f87e8a', '#fd3e51', '#dc3545', '#b62d3b', '#91252f']);
+// const blue = animationHelper(['#7e9df8', '#3e64fd', '#4035dc', '#462db6', '#253991']);
+
+// const Box = styled.div`
+//   animation: ${props => props.theme.animation} 750ms 5;
+// `
+
+// Box.defaultProps = {
+//   theme:{
+//     animation:blue
+//   }
+// } 
+
+// function App(){
+//   return (
+//     <div className='container'>
+//       <div className='flex justify-around'>
+//         <Box className='p-3' theme={{animation:brown}}>box</Box>
+//         <Box className='p-3' theme={{animation:red}}>box</Box>
+//         <Box className='p-3'>box</Box>
+//       </div>
+//     </div>
+//   )
+// }
+
+// ----------------------------------------------------------HOC------------------------------------------------------
+// function SimpleButton(props){
+//   const newProps = {...props, className:`${props.className || ''} p-2`};
+
+//   return <button {...newProps}>{props.children}</button>
+// }
+
+// // HOC(function)
+// function addColorButton(WrapComponent){
+//   return (props) => <WrapComponent {...props}></WrapComponent>
+// }
+
+// // HOC(component)
+// function WithColorButton(WrapComponent){
+//   return (props) => <WrapComponent {...props}></WrapComponent>
+// }
+
+// function enhance(WrappedComponent) {
+//   class Enhance extends React.Component {
+//     constructor(props){
+//       super(props);
+//       this.state = {
+
+//       };
+//     }
+
+//     render(){
+//       const { extraProp, ...passThroughProps } = this.props;
+
+//       return (
+//         <WrappedComponent {...passThroughProps}></WrappedComponent>
+//       )
+//     }
+//   }
+//   // Must know exactly which method(s) to copy :(
+//   // Enhance.staticMethod = WrappedComponent.staticMethod;
+//   return Enhance;
+// }
+ 
+// const BlueButton = addColorButton(SimpleButton);
+// const VioletButton = WithColorButton(SimpleButton); 
+// const IndigoButton = enhance(SimpleButton);
+
+// function App(){
+//   return (
+//     <div className='container py-2'>
+//       <SimpleButton>SimpleButton</SimpleButton>
+
+//       <BlueButton className='bg-blue-600 hover:bg-blue-800 text-white ml-3'>BlueButton</BlueButton>
+
+//       <VioletButton className='bg-violet-600 text-white rounded-md ml-3'  onClick={() => {alert('this is VioletButton')}}>VioletButton</VioletButton>
+
+//       {addColorButton(SimpleButton)({className:'bg-pink-400 text-white rounded-full ml-3', children:'PinkButton'})}
+
+//       <IndigoButton extraProp='dsadasd' onClick={() => {console.log('onClick');}} className='bg-indigo-600 text-white'>bbb</IndigoButton>
+//     </div>
+//   )
+// }
+
+// ------------------------------------------------------------MUI + HOC----------------------------------------------------
+// function App(){
+//   return (
+//     <div className='container'>
+//       <Grid container className='mb-4'>
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+//         <Typography noWrap>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique aliquam iure accusantium tenetur maxime harum provident, facilis voluptatibus quaerat architecto exercitationem animi quia ut ex distinctio vel error nihil recusandae.</Typography>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+//           <Typography component='h2' variant="h6" color='blue'>aaa</Typography>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+//           <div className="item">B</div>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+//           <div className="item">b</div>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
+//           <div className="item">C</div>
+//         </Grid>
+
+//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
+//           <div className="item">c</div>
+//         </Grid>                
+//       </Grid>
+
+//       <ToDoList_MUI></ToDoList_MUI>
+
+//     </div>
+//   );
+// }
+
+// ------------------------------------------------------------GraphQL & Apollo client----------------------------------------------------
+
+// function App(){
+//   return (
+//     <div className='container'>
+//       <ApolloTimeline></ApolloTimeline>
+//       <ApolloRefetch></ApolloRefetch>
+//     </div>
+//   )
+// }
+
+// --------------------------------------------------------------useState & useEffect 2--------------------------------------------------
+
+// function App(){
+//   const [isFoo, setIsFoo] = useState(true);
+
+//   const foo = () => {console.log('this is foo');};
+//   const bar = () => {console.log('this is bar');};
+
+//   return (
+//     <div className='container'>
+//       <SimpleButton class='mb-2' click={() => setIsFoo(!isFoo)}>change props</SimpleButton>
+
+//       <p>isFoo: {isFoo.toString()}</p>
+//       <PassFunction onClick={isFoo? foo : bar}></PassFunction>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------------useState & useEffect3----------------------------------------------------
+
+// function App(){
+//   return (
+//     <div>
+//       <Clock></Clock>
+
+//       <Calculator></Calculator>
+
+//       <ToDoList_MUI></ToDoList_MUI>
+//     </div>
+//   )
+// }
+
+// ---------------------------------difference between function component and class component ----------------------------
+// function Foo(props){
+//   useEffect(() => {
+//     setTimeout(() => {
+//       console.log(`Foo: ${props.name}`);
+  
+//     }, 3000);
+
+//   });
+
+//   return (
+//     <p>name of Foo is {props.name}</p>
+//   )
+// }
+
+// class Bar extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+
+//     };
+//   }
+
+//   showMessage = (user) => {
+//     console.log('Followed ' + user);
+//   };
+
+//   handleClick = () => {
+//     const {name} = this.props;
+//     setTimeout(() => this.showMessage(name), 3000);
+//   };
+
+//   componentDidUpdate(){
+//     // this.handleClick();
+    
+//     const props = this.props;
+
+//     setTimeout(() => {
+//       console.log(`Bar: ${props.name}`);
+      
+//     }, 3000);
+//   }
+
+//   sayName = (name) => {
+//     console.log(`Bar: ${name}`);
+//   }
+
+//   render() { 
+//     return (
+//       <div>
+//         name of Bar is {this.props.name}
+//       </div>
+//     );
+//   }
+// }
+ 
+// function App(){
+//   const [nickName, setNickName] = useState('Emma');
+//   // const [arr, setArr] = useState([1]);
+
+//   return (
+//     <div>
+//       <Foo name={nickName}></Foo>
+
+//       {/* {
+//         arr.map((i, index) => <Bar key={index} name={nickName}></Bar>)
+//       } */}
+
+//       <Bar name={nickName}></Bar>
+      
+//       <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
+//         <option value="Alex" key="Alex">Alex</option>
+//         <option value="Joyce" key="Joyce">Joyce</option>
+//       </select>
+
+//       {/* <SimpleButton click={() => {setArr([])}}>clear arr</SimpleButton> */}
+
+//       {/* <SimpleButton click={() => {setNickName('Alex')}}>click to change name</SimpleButton> */}
+//     </div>
+//   )
+// }
+
+// -------------------------------------------useMemo + useReducer--------------------------------------
+
+// function App(){
+//   return (
+//     <ClassMemberList list={[
+//       {id:'001', className:'A', name:'Alex'},
+//       {id:'002', className:'C', name:'Allen'},
+//       {id:'003', className:'B', name:'Amy'},
+//       {id:'004', className:'C', name:'Apollo'},
+//       {id:'005', className:'C', name:'Bill'},
+//       {id:'006', className:'C', name:'Belinda'},
+//       {id:'007', className:'A', name:'Cinderella'},
+//       {id:'008', className:'B', name:'Danial'},
+//       {id:'009', className:'A', name:'Emma'},
+//     ]}></ClassMemberList>
+//   )
+// }
+
+// ---------------------------------------------------------useRef----------------------------------------------------
+// function Foo(props){
+//   const name = useRef('Emma');
+
+//   useEffect(() => {
+//     name.current = props.name;
+
+//     setTimeout(() => {
+//       console.log(name.current);
+//       console.log(props.name);
+  
+//     }, 3000);
+
+//   });
+
+//   return (
+//     <p>name of Foo is {props.name}</p>
+//   )
+// }
+
+// function App(){
+//   const [nickName, setNickName] = useState('Emma');
+
+//   return (
+//     <div>
+//       <Foo name={nickName}></Foo>
+
+//       <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
+//         <option value="Alex" key="Alex">Alex</option>
+//         <option value="Joyce" key="Joyce">Joyce</option>
+//       </select>
+//     </div>
+//   )
+// }
+
+// ---------------------------------------------------------useCallback & useMemo----------------------------------------------------
+// function GeneralChild({callback, type, children}){
+//   console.log(`G + ${type[0]}`);
+  
+//   return (
+//       <div className="border-solid border-2 border-blue-400 p-2">
+//           <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>G + {type[0]}</h1>
+//           {children}
+//           <p>callback return value: {callback()}</p>
+//       </div>
+//   )
+// }
+
+// const MemoizedChild = React.memo(({ callback, type, children }) => {
+//   console.log(`M + ${type[0]}`);
+
+//   return (
+//     <div className="border-solid border-2 border-yellow-400 p-2">
+//       <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>M + {type[0]}</h1>
+//       {children}
+//       <p>callback return value: {callback()}</p>
+//     </div>    
+//   )
+// });
+
+// // const store = new Set();
+
+// function App(){
+//   const [num, setNum] = useState(1);
+
+//   const memoizedCallback = useCallback(() => {
+//     return 33;
+//   }, []);
+
+//   const generalCallback = () => {
+//     return 33;
+//   }
+
+//   // store.add(memoizedCallback);
+//   // store.add(generalCallback);
+//   // console.log(store);
+//   console.log('-----------------');
+
+//   return(
+//     <div>
+//       <div className='flex mb-3'>
+//         <p className='m-2'>num: {num}</p>
+//         <Button variant="contained" onClick={() => setNum(Math.floor(Math.random() * 3) + 1)}>change num</Button>
+//         {/* <button className='ml-2 bg-blue-400 p-2' onClick={() => setFruit(fruitArray[num])}>change fruit</button> */}
+//       </div>
+
+//       <div className='grid grid-cols-2 gap-2'>
+//         {/* num不變，子組件就不重新render */}
+//         <GeneralChild type='memoized callback' callback={memoizedCallback}></GeneralChild>
+
+//         {/* num不變，子組件就不重新render */}
+//         <GeneralChild type='general callback' callback={generalCallback}></GeneralChild>
+
+//         {/* 子組件不重新render */}
+//         <MemoizedChild type='memoized callback' callback={memoizedCallback}></MemoizedChild>
+
+//         {/* num不變，子組件就不重新render */}
+//         <MemoizedChild type='general callback' callback={generalCallback}></MemoizedChild>
+//       </div>
+//     </div>
+//   );
+// }
+
+// -----------------------------------------------composition------------------------------------------------------
+
+// function App(){
+//   const [userData, setUserData] = useState({});
+
+//   useEffect(() => {
+//     const getUserData = async() => {
+//       await fetch('https://api.github.com/users/tempura327', {
+//         method:'GET'
+//       }).then(async(d) => setUserData(await d.json()));
+//     }
+
+//     getUserData();
+//   }, [])
+
+//   return (
+//     <div className='w-full'>
+//       <Page user={userData} avatarStyle='w-14 h-14'>
+//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+//         <ApolloTimeline></ApolloTimeline>
+//       </Page>
+//     </div>
+//   );
+// }
+
+// --------------------------------createContext & Provider & Consumer--------------------------------------------
+// const MyContext = React.createContext({name:'Alex'});
+// console.log(MyContext);
+
+// class Foo extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {  };
+//   }
+
+//   render() { 
+//     return (
+//       <div className='w-30 p-4 bg-cyan-500 m-2'>
+//         {this.props.children || Object.keys(this.context).map(i => <p key={i}>{`${i}: ${this.context[i]}`}</p>)}
+//       </div>
+//     );
+//   }
+// }
+
+// Foo.contextType = MyContext;
+
+// function Bar(props){
+//   console.log(this);
+//   return (
+//     <div className='w-30 p-4 bg-pink-300 m-2'>
+//       {props.children}
+//     </div>
+//   );
+// }
+
+// // Function components do not support contextType.
+// // Bar.contextType = MyContext;
+
+// function App(){
+//   const MyContext = React.createContext();
+
+//   return (
+//     <div className='flex flex-col'>
+//       <h1>直接指定contextType給class component</h1>
+//       <Foo></Foo>
+
+//       {/* <MyContext.Provider value={MyContext}> */}
+//       <MyContext.Provider value={{name:'Tempura', avatar_url:'https://avatars.githubusercontent.com/u/75103292?v=4'}}>
+//         <h1>Consumer內直接寫JSX</h1>
+//         <MyContext.Consumer>
+//           {
+//             value => <div className='w-30 p-4 bg-yellow-400 m-2'>
+//                         {
+//                           Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+//                         }
+//                       </div>
+//           }
+//         </MyContext.Consumer>
+        
+//         <h1>直接指定contextType給class component</h1>
+//         <Foo></Foo>
+
+//         <h1>Consumer內函式放class component，再將函式收到的context放到class component</h1>
+//         <MyContext.Consumer>
+//           {
+//             value => <Foo>
+//                         <ul>
+//                           {
+//                             Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
+//                           }
+//                         </ul>
+//                       </Foo>
+//           }
+//           {/* {
+//             value => <Foo></Foo>
+//           } */}
+//         </MyContext.Consumer>
+
+//         {/* 讀不到context */}
+//         {/* <Bar></Bar> */}
+
+//         <h1>Consumer內函式放function component，再將函式收到的context放到function component</h1>
+//         <MyContext.Consumer>
+//           {value => <Bar>{Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)}</Bar>}
+//         </MyContext.Consumer>
+//       </MyContext.Provider>
+//     </div>
+//   );
+// }
+
+// --------------------------------useContext--------------------------------------------
+// if you don't use useContext, you need to pass level to every Heading components.
+// function App(){
+//   return (
+//     <div>
+//       <Section>
+//         <Heading level={1}>Passing Data Deeply with Context</Heading>
+//         <Heading level={1}>Passing Data Deeply with Context</Heading>
+
+//         <Section>
+//           <Heading level={2}>Passing Data Deeply with Context</Heading>
+//           <Heading level={2}>Passing Data Deeply with Context</Heading>
+          
+//           <Section>
+//             <Heading level={3}>Passing Data Deeply with Context</Heading>
+//             <Heading level={3}>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+// if you use useContext, you just pass level to Section component, then Heading components below it can get level.
+// function App(){
+//   return (
+//     <div>
+//       <Section level={1}>
+//         <Heading>Passing Data Deeply with Context</Heading>
+//         <Heading>Passing Data Deeply with Context</Heading>
+
+//         <Section level={2}>
+//           <Heading>Passing Data Deeply with Context</Heading>
+//           <Heading>Passing Data Deeply with Context</Heading>
+          
+//           <Section level={3}>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+// if you don't want pass level to Section again and again, you just want the size of text become smaller,
+// you should use useContext() in Section to get the current value of context,
+// the plus 1 to current value and pass it to context object.
+
+// function App(){
+//   return (
+//     <div>
+//       <Section>
+//         <Heading>Passing Data Deeply with Context</Heading>
+//         <Heading>Passing Data Deeply with Context</Heading>
+
+//         <Section>
+//           <Heading>Passing Data Deeply with Context</Heading>
+//           <Heading>Passing Data Deeply with Context</Heading>
+          
+//           <Section>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//             <Heading>Passing Data Deeply with Context</Heading>
+//           </Section>
+//         </Section>
+//       </Section>
+//     </div>
+//   );
+// }
+
+
+// // --------------------------------useContext--------------------------------------------
+// function Button({onClick, children}){
+//   const {button} = useContext(ThemeContext);
+
+//   return (
+//     <button className={`rounded p-2 ${button}`} onClick={onClick || null}>{children}</button>
+//   )
+// }
+
+// function NavigationBar({color, children, className = ''}){
+//   return (
+//     <nav className={`flex p-4 px-12 w-full ${color} ${className}`}>
+//       {children}
+//     </nav>
+//   )
+// }
+
+// function Footer({color, children}){
+//   return (
+//     <footer className={`flex justify-between items-center p-4 px-12 w-full ${color}`}>
+//       {children}
+//     </footer>
+//   )
+// }
+
+// function Link({href = '#', color, children}){
+//   return (
+//     <a href={href} className={`${color} w-fit border-2 border-solid border-transparent`}>
+//       {children}
+//     </a>
+//   )
+// }
+
+// function PageLayout(props){
+//   const {nav, footer, link} = useContext(ThemeContext);
+  
+//   return (
+//     <>
+//       <NavigationBar color={nav}>
+//         <Switch onChange={(e) => {props.onThemeChange(e.target.checked? 'dark' : 'light')}} defaultChecked></Switch>
+//         <ul className='flex ml-auto'>
+//           {props.navMenu.map(i => <li className='ml-4' key={i} color={link}>
+//                               <Link color={link}>{i}</Link>    
+//                             </li>)}
+//         </ul>
+//       </NavigationBar>
+
+//       {props.children}
+      
+//       <Footer color={footer}>
+//         {
+//           props.footerChildren || <>
+//                                     <p>designed by Tempura327(2022)</p>
+
+//                                     <div className='flex'>
+//                                       {
+//                                         props.footerMenu.map(i => <div key={i.title} className='flex flex-col ml-6'>
+//                                                               <span className='font-bold mb-2'>{i.title}</span>
+//                                                               {i.content.map(item => <Link key={`${i.title}-${item}`} color={link}>{item}</Link>)}
+//                                                             </div>)
+//                                       }       
+//                                     </div>
+//                                   </>
+//         }
+//       </Footer>
+//     </>
+//   )
+// }
+
+// function App(){
+//   const [theme, setTheme] = useState('dark'); // 將模式設為App的local state 
+//   const {text, body} = themeMap[theme];
+
+//   const navMenu = ['Home', 'About', 'Note'];
+
+//   const footerMenu = [
+//     {title:'Note', content:['Javascript', 'React', 'Vue']}, 
+//     {title:'Other', content:['Github', 'Side Project']}
+//   ];
+
+//   return (
+//     <div className='w-full'>
+//       <Page user={userData} avatarStyle='w-14 h-14'>
+//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
+//         <ApolloTimeline></ApolloTimeline>
+//       </Page>
+//     </div>
+//   );
+// }
+
+// function App(){
+//   return (
+//     <ThemeContext.Provider value={themeMap[theme]}>
+//       <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme(mode)}}>
+//         <main className={`flex flex-col items-center p-8 ${body}`}>
+//             <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
+//             <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
+//             <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
+//             <Button>Read More</Button>
+//         </main>
+//       </PageLayout>
+//     </ThemeContext.Provider>
+//   )
+// }
+
+// -----------------------------------------------forwardRef------------------------------------------------------
+// forwardRef可以`暴露子組建的DOM Node給父組件`
+// 不過這會讓`組件的內部`變得更`難修改`
+// 所以`通常用於暴露複`用性高的`低階層的組件`(ex:按鈕、input)，千萬`別`用它`傳遞高階層組件`(ex: 頭像、評論)
+
+// 步驟大致為3
+// 1. 在父組件建立ref物件，並把ref物件用ref prop傳給子組件
+// 2. 用forwardRef把回傳子組件的函式包住
+// 3. 此時父祖件可以透過ref.current取得子組件的DOM Node了
+
+// [React Docs Bata - forwardRef](https://beta.reactjs.org/apis/react/forwardRef)
+// [React - forwardRef](https://reactjs.org/docs/forwarding-refs.html)
+// [ForwardRef 的使用](https://pjchender.blogspot.com/2021/03/react-dom-forwardref.html)
+
+// function App(){
+//   return (
+//     <div>
+//       <RefParent></RefParent>
+//     </div>
+//   );
+// }
+
+
 // --------------------------------------------------------useState--------------------------------------------------------
 
 // function Calculator(){
@@ -1294,684 +1973,11 @@ function animationHelper(colors){
       background-color: ${colors[4]};
     }
   `;
-} 
-
-// const brown = animationHelper(['#A7A284', '#8a8462', '#716834', '#5a5019', '#433E0E']);
-// const red = animationHelper(['#f87e8a', '#fd3e51', '#dc3545', '#b62d3b', '#91252f']);
-// const blue = animationHelper(['#7e9df8', '#3e64fd', '#4035dc', '#462db6', '#253991']);
-
-// const Box = styled.div`
-//   animation: ${props => props.theme.animation} 750ms 5;
-// `
-
-// Box.defaultProps = {
-//   theme:{
-//     animation:blue
-//   }
-// } 
-
-// function App(){
-//   return (
-//     <div className='container'>
-//       <div className='flex justify-around'>
-//         <Box className='p-3' theme={{animation:brown}}>box</Box>
-//         <Box className='p-3' theme={{animation:red}}>box</Box>
-//         <Box className='p-3'>box</Box>
-//       </div>
-//     </div>
-//   )
-// }
-
-// ----------------------------------------------------------HOC------------------------------------------------------
-// function SimpleButton(props){
-//   const newProps = {...props, className:`${props.className || ''} p-2`};
-
-//   return <button {...newProps}>{props.children}</button>
-// }
-
-// // HOC(function)
-// function addColorButton(WrapComponent){
-//   return (props) => <WrapComponent {...props}></WrapComponent>
-// }
-
-// // HOC(component)
-// function WithColorButton(WrapComponent){
-//   return (props) => <WrapComponent {...props}></WrapComponent>
-// }
-
-// function enhance(WrappedComponent) {
-//   class Enhance extends React.Component {
-//     constructor(props){
-//       super(props);
-//       this.state = {
-
-//       };
-//     }
-
-//     render(){
-//       const { extraProp, ...passThroughProps } = this.props;
-
-//       return (
-//         <WrappedComponent {...passThroughProps}></WrappedComponent>
-//       )
-//     }
-//   }
-//   // Must know exactly which method(s) to copy :(
-//   // Enhance.staticMethod = WrappedComponent.staticMethod;
-//   return Enhance;
-// }
- 
-// const BlueButton = addColorButton(SimpleButton);
-// const VioletButton = WithColorButton(SimpleButton); 
-// const IndigoButton = enhance(SimpleButton);
-
-// function App(){
-//   return (
-//     <div className='container py-2'>
-//       <SimpleButton>SimpleButton</SimpleButton>
-
-//       <BlueButton className='bg-blue-600 hover:bg-blue-800 text-white ml-3'>BlueButton</BlueButton>
-
-//       <VioletButton className='bg-violet-600 text-white rounded-md ml-3'  onClick={() => {alert('this is VioletButton')}}>VioletButton</VioletButton>
-
-//       {addColorButton(SimpleButton)({className:'bg-pink-400 text-white rounded-full ml-3', children:'PinkButton'})}
-
-//       <IndigoButton extraProp='dsadasd' onClick={() => {console.log('onClick');}} className='bg-indigo-600 text-white'>bbb</IndigoButton>
-//     </div>
-//   )
-// }
-
-// ------------------------------------------------------------MUI + HOC----------------------------------------------------
-// function App(){
-//   return (
-//     <div className='container'>
-//       <Grid container className='mb-4'>
-//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
-//         <Typography noWrap>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique aliquam iure accusantium tenetur maxime harum provident, facilis voluptatibus quaerat architecto exercitationem animi quia ut ex distinctio vel error nihil recusandae.</Typography>
-//         </Grid>
-
-//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
-//           <Typography component='h2' variant="h6" color='blue'>aaa</Typography>
-//         </Grid>
-
-//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
-//           <div className="item">B</div>
-//         </Grid>
-
-//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
-//           <div className="item">b</div>
-//         </Grid>
-
-//         <Grid item xs={12} md={6} className='border-solid border-2 border-blue-400'>
-//           <div className="item">C</div>
-//         </Grid>
-
-//         <Grid item xs={12} md={6} className='border-solid border-2 border-yellow-600'>
-//           <div className="item">c</div>
-//         </Grid>                
-//       </Grid>
-
-//       <ToDoList_MUI></ToDoList_MUI>
-
-//     </div>
-//   );
-// }
-
-// ------------------------------------------------------------GraphQL & Apollo client----------------------------------------------------
-
-// function App(){
-//   return (
-//     <div className='container'>
-//       <ApolloTimeline></ApolloTimeline>
-//       <ApolloRefetch></ApolloRefetch>
-//     </div>
-//   )
-// }
-
-// --------------------------------------------------------------useState & useEffect 2--------------------------------------------------
-
-// function App(){
-//   const [isFoo, setIsFoo] = useState(true);
-
-//   const foo = () => {console.log('this is foo');};
-//   const bar = () => {console.log('this is bar');};
-
-//   return (
-//     <div className='container'>
-//       <SimpleButton class='mb-2' click={() => setIsFoo(!isFoo)}>change props</SimpleButton>
-
-//       <p>isFoo: {isFoo.toString()}</p>
-//       <PassFunction onClick={isFoo? foo : bar}></PassFunction>
-//     </div>
-//   )
-// }
-
-// ---------------------------------------------------------useState & useEffect3----------------------------------------------------
-
-// function App(){
-//   return (
-//     <div>
-//       <Clock></Clock>
-
-//       <Calculator></Calculator>
-
-//       <ToDoList_MUI></ToDoList_MUI>
-//     </div>
-//   )
-// }
-
-// ---------------------------------difference between function component and class component ----------------------------
-// function Foo(props){
-//   useEffect(() => {
-//     setTimeout(() => {
-//       console.log(`Foo: ${props.name}`);
-  
-//     }, 3000);
-
-//   });
-
-//   return (
-//     <p>name of Foo is {props.name}</p>
-//   )
-// }
-
-// class Bar extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-
-//     };
-//   }
-
-//   showMessage = (user) => {
-//     console.log('Followed ' + user);
-//   };
-
-//   handleClick = () => {
-//     const {name} = this.props;
-//     setTimeout(() => this.showMessage(name), 3000);
-//   };
-
-//   componentDidUpdate(){
-//     // this.handleClick();
-    
-//     const props = this.props;
-
-//     setTimeout(() => {
-//       console.log(`Bar: ${props.name}`);
-      
-//     }, 3000);
-//   }
-
-//   sayName = (name) => {
-//     console.log(`Bar: ${name}`);
-//   }
-
-//   render() { 
-//     return (
-//       <div>
-//         name of Bar is {this.props.name}
-//       </div>
-//     );
-//   }
-// }
- 
-// function App(){
-//   const [nickName, setNickName] = useState('Emma');
-//   // const [arr, setArr] = useState([1]);
-
-//   return (
-//     <div>
-//       <Foo name={nickName}></Foo>
-
-//       {/* {
-//         arr.map((i, index) => <Bar key={index} name={nickName}></Bar>)
-//       } */}
-
-//       <Bar name={nickName}></Bar>
-      
-//       <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
-//         <option value="Alex" key="Alex">Alex</option>
-//         <option value="Joyce" key="Joyce">Joyce</option>
-//       </select>
-
-//       {/* <SimpleButton click={() => {setArr([])}}>clear arr</SimpleButton> */}
-
-//       {/* <SimpleButton click={() => {setNickName('Alex')}}>click to change name</SimpleButton> */}
-//     </div>
-//   )
-// }
-
-// -------------------------------------------useMemo + useReducer--------------------------------------
-
-// function App(){
-//   return (
-//     <ClassMemberList list={[
-//       {id:'001', className:'A', name:'Alex'},
-//       {id:'002', className:'C', name:'Allen'},
-//       {id:'003', className:'B', name:'Amy'},
-//       {id:'004', className:'C', name:'Apollo'},
-//       {id:'005', className:'C', name:'Bill'},
-//       {id:'006', className:'C', name:'Belinda'},
-//       {id:'007', className:'A', name:'Cinderella'},
-//       {id:'008', className:'B', name:'Danial'},
-//       {id:'009', className:'A', name:'Emma'},
-//     ]}></ClassMemberList>
-//   )
-// }
-
-// ---------------------------------------------------------useRef----------------------------------------------------
-// function Foo(props){
-//   const name = useRef('Emma');
-
-//   useEffect(() => {
-//     name.current = props.name;
-
-//     setTimeout(() => {
-//       console.log(name.current);
-//       console.log(props.name);
-  
-//     }, 3000);
-
-//   });
-
-//   return (
-//     <p>name of Foo is {props.name}</p>
-//   )
-// }
-
-// function App(){
-//   const [nickName, setNickName] = useState('Emma');
-
-//   return (
-//     <div>
-//       <Foo name={nickName}></Foo>
-
-//       <select className='block my-3' onChange={(e) => {setNickName(e.target.value)}}>
-//         <option value="Alex" key="Alex">Alex</option>
-//         <option value="Joyce" key="Joyce">Joyce</option>
-//       </select>
-//     </div>
-//   )
-// }
-
-// ---------------------------------------------------------useCallback & useMemo----------------------------------------------------
-// function GeneralChild({callback, type, children}){
-//   console.log(`G + ${type[0]}`);
-  
-//   return (
-//       <div className="border-solid border-2 border-blue-400 p-2">
-//           <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>G + {type[0]}</h1>
-//           {children}
-//           <p>callback return value: {callback()}</p>
-//       </div>
-//   )
-// }
-
-// const MemoizedChild = React.memo(({ callback, type, children }) => {
-//   console.log(`M + ${type[0]}`);
-
-//   return (
-//     <div className="border-solid border-2 border-yellow-400 p-2">
-//       <h1 className={type.startsWith('general')? 'bg-blue-400' : 'bg-yellow-400'}>M + {type[0]}</h1>
-//       {children}
-//       <p>callback return value: {callback()}</p>
-//     </div>    
-//   )
-// });
-
-// // const store = new Set();
-
-// function App(){
-//   const [num, setNum] = useState(1);
-
-//   const memoizedCallback = useCallback(() => {
-//     return 33;
-//   }, []);
-
-//   const generalCallback = () => {
-//     return 33;
-//   }
-
-//   // store.add(memoizedCallback);
-//   // store.add(generalCallback);
-//   // console.log(store);
-//   console.log('-----------------');
-
-//   return(
-//     <div>
-//       <div className='flex mb-3'>
-//         <p className='m-2'>num: {num}</p>
-//         <Button variant="contained" onClick={() => setNum(Math.floor(Math.random() * 3) + 1)}>change num</Button>
-//         {/* <button className='ml-2 bg-blue-400 p-2' onClick={() => setFruit(fruitArray[num])}>change fruit</button> */}
-//       </div>
-
-//       <div className='grid grid-cols-2 gap-2'>
-//         {/* num不變，子組件就不重新render */}
-//         <GeneralChild type='memoized callback' callback={memoizedCallback}></GeneralChild>
-
-//         {/* num不變，子組件就不重新render */}
-//         <GeneralChild type='general callback' callback={generalCallback}></GeneralChild>
-
-//         {/* 子組件不重新render */}
-//         <MemoizedChild type='memoized callback' callback={memoizedCallback}></MemoizedChild>
-
-//         {/* num不變，子組件就不重新render */}
-//         <MemoizedChild type='general callback' callback={generalCallback}></MemoizedChild>
-//       </div>
-//     </div>
-//   );
-// }
-
-// -----------------------------------------------composition------------------------------------------------------
-
-// function App(){
-//   const [userData, setUserData] = useState({});
-
-//   useEffect(() => {
-//     const getUserData = async() => {
-//       await fetch('https://api.github.com/users/tempura327', {
-//         method:'GET'
-//       }).then(async(d) => setUserData(await d.json()));
-//     }
-
-//     getUserData();
-//   }, [])
-
-//   return (
-//     <div className='w-full'>
-//       <Page user={userData} avatarStyle='w-14 h-14'>
-//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
-//         <ApolloTimeline></ApolloTimeline>
-//       </Page>
-//     </div>
-//   );
-// }
-
-// --------------------------------createContext & Provider & Consumer--------------------------------------------
-// const MyContext = React.createContext({name:'Alex'});
-// console.log(MyContext);
-
-// class Foo extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {  };
-//   }
-
-//   render() { 
-//     return (
-//       <div className='w-30 p-4 bg-cyan-500 m-2'>
-//         {this.props.children || Object.keys(this.context).map(i => <p key={i}>{`${i}: ${this.context[i]}`}</p>)}
-//       </div>
-//     );
-//   }
-// }
-
-// Foo.contextType = MyContext;
-
-// function Bar(props){
-//   console.log(this);
-//   return (
-//     <div className='w-30 p-4 bg-pink-300 m-2'>
-//       {props.children}
-//     </div>
-//   );
-// }
-
-// // Function components do not support contextType.
-// // Bar.contextType = MyContext;
-
-// function App(){
-//   const MyContext = React.createContext();
-
-//   return (
-//     <div className='flex flex-col'>
-//       <h1>直接指定contextType給class component</h1>
-//       <Foo></Foo>
-
-//       {/* <MyContext.Provider value={MyContext}> */}
-//       <MyContext.Provider value={{name:'Tempura', avatar_url:'https://avatars.githubusercontent.com/u/75103292?v=4'}}>
-//         <h1>Consumer內直接寫JSX</h1>
-//         <MyContext.Consumer>
-//           {
-//             value => <div className='w-30 p-4 bg-yellow-400 m-2'>
-//                         {
-//                           Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
-//                         }
-//                       </div>
-//           }
-//         </MyContext.Consumer>
-        
-//         <h1>直接指定contextType給class component</h1>
-//         <Foo></Foo>
-
-//         <h1>Consumer內函式放class component，再將函式收到的context放到class component</h1>
-//         <MyContext.Consumer>
-//           {
-//             value => <Foo>
-//                         <ul>
-//                           {
-//                             Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)
-//                           }
-//                         </ul>
-//                       </Foo>
-//           }
-//           {/* {
-//             value => <Foo></Foo>
-//           } */}
-//         </MyContext.Consumer>
-
-//         {/* 讀不到context */}
-//         {/* <Bar></Bar> */}
-
-//         <h1>Consumer內函式放function component，再將函式收到的context放到function component</h1>
-//         <MyContext.Consumer>
-//           {value => <Bar>{Object.keys(value).map(i => <p key={i}>{`${i}: ${value[i]}`}</p>)}</Bar>}
-//         </MyContext.Consumer>
-//       </MyContext.Provider>
-//     </div>
-//   );
-// }
-
-// --------------------------------useContext--------------------------------------------
-// if you don't use useContext, you need to pass level to every Heading components.
-// function App(){
-//   return (
-//     <div>
-//       <Section>
-//         <Heading level={1}>Passing Data Deeply with Context</Heading>
-//         <Heading level={1}>Passing Data Deeply with Context</Heading>
-
-//         <Section>
-//           <Heading level={2}>Passing Data Deeply with Context</Heading>
-//           <Heading level={2}>Passing Data Deeply with Context</Heading>
-          
-//           <Section>
-//             <Heading level={3}>Passing Data Deeply with Context</Heading>
-//             <Heading level={3}>Passing Data Deeply with Context</Heading>
-//           </Section>
-//         </Section>
-//       </Section>
-//     </div>
-//   );
-// }
-
-// if you use useContext, you just pass level to Section component, then Heading components below it can get level.
-// function App(){
-//   return (
-//     <div>
-//       <Section level={1}>
-//         <Heading>Passing Data Deeply with Context</Heading>
-//         <Heading>Passing Data Deeply with Context</Heading>
-
-//         <Section level={2}>
-//           <Heading>Passing Data Deeply with Context</Heading>
-//           <Heading>Passing Data Deeply with Context</Heading>
-          
-//           <Section level={3}>
-//             <Heading>Passing Data Deeply with Context</Heading>
-//             <Heading>Passing Data Deeply with Context</Heading>
-//           </Section>
-//         </Section>
-//       </Section>
-//     </div>
-//   );
-// }
-
-// if you don't want pass level to Section again and again, you just want the size of text become smaller,
-// you should use useContext() in Section to get the current value of context,
-// the plus 1 to current value and pass it to context object.
-
-// function App(){
-//   return (
-//     <div>
-//       <Section>
-//         <Heading>Passing Data Deeply with Context</Heading>
-//         <Heading>Passing Data Deeply with Context</Heading>
-
-//         <Section>
-//           <Heading>Passing Data Deeply with Context</Heading>
-//           <Heading>Passing Data Deeply with Context</Heading>
-          
-//           <Section>
-//             <Heading>Passing Data Deeply with Context</Heading>
-//             <Heading>Passing Data Deeply with Context</Heading>
-//           </Section>
-//         </Section>
-//       </Section>
-//     </div>
-//   );
-// }
-
-
-// // --------------------------------useContext--------------------------------------------
-// function Button({onClick, children}){
-//   const {button} = useContext(ThemeContext);
-
-//   return (
-//     <button className={`rounded p-2 ${button}`} onClick={onClick || null}>{children}</button>
-//   )
-// }
-
-// function NavigationBar({color, children, className = ''}){
-//   return (
-//     <nav className={`flex p-4 px-12 w-full ${color} ${className}`}>
-//       {children}
-//     </nav>
-//   )
-// }
-
-// function Footer({color, children}){
-//   return (
-//     <footer className={`flex justify-between items-center p-4 px-12 w-full ${color}`}>
-//       {children}
-//     </footer>
-//   )
-// }
-
-// function Link({href = '#', color, children}){
-//   return (
-//     <a href={href} className={`${color} w-fit border-2 border-solid border-transparent`}>
-//       {children}
-//     </a>
-//   )
-// }
-
-// function PageLayout(props){
-//   const {nav, footer, link} = useContext(ThemeContext);
-  
-//   return (
-//     <>
-//       <NavigationBar color={nav}>
-//         <Switch onChange={(e) => {props.onThemeChange(e.target.checked? 'dark' : 'light')}} defaultChecked></Switch>
-//         <ul className='flex ml-auto'>
-//           {props.navMenu.map(i => <li className='ml-4' key={i} color={link}>
-//                               <Link color={link}>{i}</Link>    
-//                             </li>)}
-//         </ul>
-//       </NavigationBar>
-
-//       {props.children}
-      
-//       <Footer color={footer}>
-//         {
-//           props.footerChildren || <>
-//                                     <p>designed by Tempura327(2022)</p>
-
-//                                     <div className='flex'>
-//                                       {
-//                                         props.footerMenu.map(i => <div key={i.title} className='flex flex-col ml-6'>
-//                                                               <span className='font-bold mb-2'>{i.title}</span>
-//                                                               {i.content.map(item => <Link key={`${i.title}-${item}`} color={link}>{item}</Link>)}
-//                                                             </div>)
-//                                       }       
-//                                     </div>
-//                                   </>
-//         }
-//       </Footer>
-//     </>
-//   )
-// }
-
-// function App(){
-//   const [theme, setTheme] = useState('dark'); // 將模式設為App的local state 
-//   const {text, body} = themeMap[theme];
-
-//   const navMenu = ['Home', 'About', 'Note'];
-
-//   const footerMenu = [
-//     {title:'Note', content:['Javascript', 'React', 'Vue']}, 
-//     {title:'Other', content:['Github', 'Side Project']}
-//   ];
-
-//   return (
-//     <div className='w-full'>
-//       <Page user={userData} avatarStyle='w-14 h-14'>
-//         <h1 className='text-2xl font-bold text-center my-4'>ApolloTimeline</h1>
-//         <ApolloTimeline></ApolloTimeline>
-//       </Page>
-//     </div>
-//   );
-// }
-
-// function App(){
-//   return (
-//     <ThemeContext.Provider value={themeMap[theme]}>
-//       <PageLayout navMenu={navMenu} footerMenu={footerMenu} onThemeChange={(mode) => {setTheme(mode)}}>
-//         <main className={`flex flex-col items-center p-8 ${body}`}>
-//             <img src="https://avatars.githubusercontent.com/u/75103292?v=4" alt="" className='w-80 rounded-full mb-4'/>
-//             <h1 className={`text-3xl mb-2 ${text}`}>Tempura327</h1>
-//             <h3 className={`text-xl mb-6 ${text}`}>A Tempura Ninja fans</h3>
-//             <Button>Read More</Button>
-//         </main>
-//       </PageLayout>
-//     </ThemeContext.Provider>
-//   )
-// }
-
-// -----------------------------------------------forwardRef------------------------------------------------------
-// forwardRef可以`暴露子組建的DOM Node給父組件`
-// 不過這會讓`組件的內部`變得更`難修改`
-// 所以`通常用於暴露複`用性高的`低階層的組件`(ex:按鈕、input)，千萬`別`用它`傳遞高階層組件`(ex: 頭像、評論)
-
-// 步驟大致為3
-// 1. 在父組件建立ref物件，並把ref物件用ref prop傳給子組件
-// 2. 用forwardRef把回傳子組件的函式包住
-// 3. 此時父祖件可以透過ref.current取得子組件的DOM Node了
-
-// [React Docs Bata - forwardRef](https://beta.reactjs.org/apis/react/forwardRef)
-// [React - forwardRef](https://reactjs.org/docs/forwarding-refs.html)
-// [ForwardRef 的使用](https://pjchender.blogspot.com/2021/03/react-dom-forwardref.html)
-
-function App(){
-  return (
-    <div>
-      <RefParent></RefParent>
-    </div>
-  );
 }
-
 // ----------------------------------------------------------------------------
 
+const App = () => (
+  <Router></Router>
+)
 
 export default App;

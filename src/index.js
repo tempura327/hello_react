@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style/index.css';
 import App from './App'; // App.js是一個function component，也是root component
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
@@ -17,9 +18,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // 將App渲染出來
 
 root.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
+  <Router>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </Router>
+
 
   // <React.StrictMode> 
   // </React.StrictMode>
