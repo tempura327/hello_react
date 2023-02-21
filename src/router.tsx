@@ -8,13 +8,8 @@ import Product from './pages/Product'
 export default function App() {
     let element = useRoutes([
         { path: '/', element: <Home /> },
-        {
-            path: 'about', element: <About />,
-            // children: [
-            //     { path: 'history', element: <Product /> },
-            // ]
-        },
-        { path: 'history', element: <Product /> },
+        { path: 'about', element: <About />},
+        { path: 'product', element: <Product /> },
     ])
     return element
 }

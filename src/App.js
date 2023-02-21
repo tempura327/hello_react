@@ -2,6 +2,7 @@ import React, {Component, createRef, useEffect, useState, useRef, useReducer, us
 import styled, { css, keyframes } from 'styled-components';
 import Router from './router';
 
+// import "../style/index.css";
 
 // import Grid from "@mui/material/Grid";
 // import Button from '@mui/material/Button';
